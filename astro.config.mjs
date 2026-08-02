@@ -1,11 +1,27 @@
 // @ts-check
 import { defineConfig } from 'astro/config'
+import sentry from '@sentry/astro'
 import starlight from '@astrojs/starlight'
 import react from '@astrojs/react'
 
 export default defineConfig({
   site: 'https://docs.canshift.tmbk.ch',
   integrations: [
+    ...(process.env.PUBLIC_SENTRY_DSN
+      ? [
+          sentry({
+            dsn: process.env.PUBLIC_SENTRY_DSN,
+            sourceMapsUploadOptions: process.env.SENTRY_AUTH_TOKEN
+              ? {
+                  org: 'tmbk',
+                  project: 'canshift-docs',
+                  url: 'https://de.sentry.io',
+                  authToken: process.env.SENTRY_AUTH_TOKEN,
+                }
+              : { enabled: false },
+          }),
+        ]
+      : []),
     react(),
     starlight({
       title: 'CANShift Docs',
