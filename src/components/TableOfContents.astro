@@ -1,0 +1,75 @@
+---
+import navModel from '../data/nav-model.json'
+import TocList from './TocList.astro'
+
+const route = Astro.locals.starlightRoute
+const toc = route.toc
+const editUrl = route.editUrl
+
+const strip = (value) => value.replace(/\/+$/, '')
+const path = strip(Astro.url.pathname)
+const href = (slug) => `/${slug}`
+
+const group = navModel.groups.find((entry) =>
+  entry.items.some(
+    (item) =>
+      path === href(item.slug) || (item.children ?? []).some((child) => path === href(child.slug))
+  )
+)
+
+const reportBase = {
+  firmware: 'https://github.com/CANShift/canshift-firmware/issues/new',
+  tuner: 'https://github.com/CANShift/canshift-tuner/issues/new',
+  docs: 'https://github.com/CANShift/canshift-docs/issues/new',
+}
+const reportUrl = reportBase[group?.reportRepo] ?? reportBase.docs
+
+const hasHeadings = Boolean(toc && toc.items.some((item) => item.slug !== '_top'))
+---
+
+<nav class="cs-toc" aria-labelledby="starlight__on-this-page">
+  <h2 id="starlight__on-this-page">On this page</h2>
+  {
+    hasHeadings ? (
+      <TocList items={toc.items} />
+    ) : (
+      <p class="cs-toc-empty">Outline only — no headings yet</p>
+    )
+  }
+  <div class="cs-toc-footer">
+    {editUrl && (
+      <a href={editUrl.href} target="_blank" rel="noopener">
+        Edit this page ↗
+      </a>
+    )}
+    <a href={reportUrl} target="_blank" rel="noopener">
+      Report an issue ↗
+    </a>
+  </div>
+</nav>
+
+<script>
+  const toc = document.querySelector('.cs-toc')
+  if (toc) {
+    const links = [...toc.querySelectorAll('a[href^="#"]')]
+    const targets = links
+      .map((link) => ({
+        link,
+        el: document.getElementById(decodeURIComponent(link.getAttribute('href').slice(1))),
+      }))
+      .filter((entry) => entry.el)
+
+    if (targets.length) {
+      const setCurrent = () => {
+        let active = targets[0].link
+        for (const entry of targets) {
+          if (entry.el.getBoundingClientRect().top <= 130) active = entry.link
+        }
+        links.forEach((link) => link.setAttribute('aria-current', link === active ? 'true' : 'false'))
+      }
+      setCurrent()
+      window.addEventListener('scroll', setCurrent, { passive: true })
+      window.addEventListener('resize', setCurrent)
+    }
+  }
+</script>
