@@ -291,32 +291,28 @@
           "label": "Tuner tour",
           "slug": "tuner-app/tuner-tour",
           "exists": true,
-          "children": [],
-          "placeholder": true
+          "children": []
         },
         {
           "num": "4.2",
           "label": "Pairing over BLE",
           "slug": "tuner-app/pairing",
           "exists": true,
-          "children": [],
-          "placeholder": true
+          "children": []
         },
         {
           "num": "4.3",
           "label": "Layout editor",
           "slug": "tuner-app/layout-editor",
           "exists": true,
-          "children": [],
-          "placeholder": true
+          "children": []
         },
         {
           "num": "4.4",
           "label": "Mobile companion",
           "slug": "tuner-app/mobile",
           "exists": true,
-          "children": [],
-          "placeholder": true
+          "children": []
         }
       ]
     },
