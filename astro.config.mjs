@@ -3,6 +3,8 @@ import { defineConfig } from 'astro/config'
 import sentry from '@sentry/astro'
 import starlight from '@astrojs/starlight'
 import react from '@astrojs/react'
+import navModel from './src/data/nav-model.json'
+import { buildSidebar } from './src/config/nav.mjs'
 
 const codeThemePalette = {
   colors: {
@@ -109,72 +111,7 @@ export default defineConfig({
           href: 'https://github.com/CANShift',
         },
       ],
-      sidebar: [
-        {
-          label: 'Welcome',
-          items: [{ label: 'Overview', link: '/' }],
-        },
-        {
-          label: 'User guide',
-          badge: { text: 'Driver', variant: 'success' },
-          collapsed: false,
-          items: [
-            {
-              label: 'Get started',
-              items: [{ autogenerate: { directory: 'user-guide/getting-started' } }],
-            },
-            {
-              label: 'Install',
-              items: [{ autogenerate: { directory: 'user-guide/install' } }],
-            },
-            {
-              label: 'Configure',
-              items: [{ autogenerate: { directory: 'user-guide/configure' } }],
-            },
-            {
-              label: 'Use',
-              items: [{ autogenerate: { directory: 'user-guide/usage' } }],
-            },
-          ],
-        },
-        {
-          label: 'Technical docs',
-          badge: { text: 'Dev', variant: 'caution' },
-          collapsed: false,
-          items: [
-            {
-              label: 'Firmware architecture',
-              items: [{ autogenerate: { directory: 'technical/architecture' } }],
-            },
-            {
-              label: 'Reference',
-              items: [{ autogenerate: { directory: 'technical/reference' } }],
-            },
-            {
-              label: 'Contributing',
-              items: [{ autogenerate: { directory: 'technical/contributing' } }],
-            },
-          ],
-        },
-        {
-          label: 'External',
-          collapsed: true,
-          items: [
-            {
-              label: 'Tuner (web — includes flasher)',
-              link: 'https://canshift.tmbk.ch',
-              attrs: { target: '_blank', rel: 'noopener' },
-              badge: { text: '↗', variant: 'note' },
-            },
-            {
-              label: 'GitHub org',
-              link: 'https://github.com/CANShift',
-              attrs: { target: '_blank', rel: 'noopener' },
-              badge: { text: '↗', variant: 'note' },
-            },
-          ],
-        },
-      ],
+      sidebar: buildSidebar(navModel),
       customCss: ['./src/styles/canshift.css'],
       lastUpdated: true,
       pagination: true,
