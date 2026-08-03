@@ -10,7 +10,9 @@
     "preview": "astro preview",
     "astro": "astro",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "prepare": "husky",
+    "lint:pre-commit": "lint-staged"
   },
   "dependencies": {
     "@astrojs/react": "^5.0.7",
@@ -26,9 +28,14 @@
   "devDependencies": {
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
-    "prettier": "^3.9.6"
+    "prettier": "^3.9.6",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.5.2"
   },
   "overrides": {
     "esbuild": "^0.28.1"
+  },
+  "lint-staged": {
+    "*.{ts,js,mjs,astro,css,json,md,mdx,yml,yaml}": "prettier --write --ignore-unknown"
   }
 }
