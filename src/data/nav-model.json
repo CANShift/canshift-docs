@@ -51,22 +51,19 @@
               "num": "1.4.1",
               "label": "ECU profiles",
               "slug": "user-guide/configure/ecu-profiles",
-              "exists": true,
-              "placeholder": true
+              "exists": true
             },
             {
               "num": "1.4.2",
               "label": "Widgets & pages",
               "slug": "user-guide/configure/widgets",
-              "exists": true,
-              "placeholder": true
+              "exists": true
             },
             {
               "num": "1.4.3",
               "label": "Live data",
               "slug": "user-guide/configure/live-data",
-              "exists": true,
-              "placeholder": true
+              "exists": true
             }
           ]
         },
