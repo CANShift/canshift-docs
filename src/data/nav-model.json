@@ -154,8 +154,7 @@
               "slug": "technical/architecture/ble-transport",
               "exists": true
             }
-          ],
-          "placeholder": true
+          ]
         },
         {
           "num": "2.6",
