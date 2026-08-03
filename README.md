@@ -1,5 +1,10 @@
 # canshift-docs
 
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset=".github/icons/docs-dark.svg">
+  <img src=".github/icons/docs.svg" alt="" height="72">
+</picture>
+
 User and technical documentation for CANShift. Stack: [Astro](https://astro.build/) + [Starlight](https://starlight.astro.build/).
 
 ## Dev
