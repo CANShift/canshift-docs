@@ -1,0 +1,203 @@
+---
+import navModel from '../data/nav-model.json'
+
+const strip = (value) => value.replace(/\/+$/, '')
+const path = strip(Astro.url.pathname)
+const href = (slug) => `/${slug}`
+const isCurrent = (slug) => path === href(slug)
+
+const activeAudience = 'dev'
+
+const audienceCount = navModel.groups
+  .filter((group) => group.audiences.includes(activeAudience))
+  .reduce(
+    (total, group) =>
+      total + group.items.reduce((sum, item) => sum + 1 + (item.children ?? []).length, 0),
+    0
+  )
+
+const groups = navModel.groups.map((group) => {
+  const items = group.items.map((item) => {
+    const children = (item.children ?? []).map((child) => ({
+      label: child.label,
+      href: child.exists ? href(child.slug) : null,
+      current: isCurrent(child.slug),
+    }))
+    return {
+      label: item.label,
+      href: item.exists ? href(item.slug) : null,
+      current: isCurrent(item.slug),
+      children,
+      childCurrent: children.some((child) => child.current),
+    }
+  })
+  return {
+    id: group.id,
+    label: group.label,
+    marks: group.icon.repoMarkPaths,
+    current: items.some((item) => item.current || item.childCurrent),
+    items,
+  }
+})
+---
+
+<div class="cs-sidebar">
+  <div class="cs-aud-tabs" role="tablist" aria-label="Audience">
+    <button class="cs-aud-tab" role="tab" data-audience="driver" aria-selected="false">DRIVER</button>
+    <button class="cs-aud-tab" role="tab" data-audience="tuner" aria-selected="false">TUNER</button>
+    <button
+      class="cs-aud-tab is-active"
+      role="tab"
+      data-audience="dev"
+      aria-selected="true"
+    >
+      DEV
+    </button>
+  </div>
+
+  <div class="cs-count-row">
+    <span class="cs-count">{audienceCount} PAGES · {activeAudience.toUpperCase()}</span>
+    <button class="cs-expand-all" type="button" data-mode="expand">EXPAND ALL</button>
+  </div>
+
+  <ul class="cs-groups">
+    {
+      groups.map((group) => (
+        <li class="cs-group" data-group={group.id} data-current={group.current ? 'true' : undefined}>
+          <button class="cs-group-toggle" type="button" aria-expanded="true">
+            <svg class="cs-repo-mark" viewBox="0 0 116 100" aria-hidden="true">
+              <g transform="translate(8,0)" fill="none" stroke-width="15">
+                <path class="cs-mark-ink" d={group.marks[0]} />
+                <path class="cs-mark-accent" d={group.marks[1]} />
+              </g>
+            </svg>
+            <span class="cs-group-label">{group.label}</span>
+            <span class="cs-group-count">{group.items.length}</span>
+            <span class="cs-group-sign" aria-hidden="true" />
+          </button>
+          <ul class="cs-pages">
+            {group.items.map((item) => (
+              <li
+                class="cs-page"
+                data-has-subs={item.children.length > 0 ? 'true' : undefined}
+                data-current={item.childCurrent ? 'true' : undefined}
+              >
+                <div class="cs-page-row">
+                  {item.href ? (
+                    <a
+                      class="cs-page-link"
+                      href={item.href}
+                      aria-current={item.current ? 'page' : undefined}
+                    >
+                      <span class="cs-page-num" />
+                      <span class="cs-page-label">{item.label}</span>
+                    </a>
+                  ) : (
+                    <span class="cs-page-link cs-disabled" aria-disabled="true">
+                      <span class="cs-page-num" />
+                      <span class="cs-page-label">{item.label}</span>
+                    </span>
+                  )}
+                  {item.children.length > 0 && (
+                    <button class="cs-page-toggle" type="button" aria-expanded="false" aria-label={`Toggle ${item.label} sub-pages`} />
+                  )}
+                </div>
+                {item.children.length > 0 && (
+                  <ul class="cs-subs">
+                    {item.children.map((child) => (
+                      <li class="cs-sub">
+                        {child.href ? (
+                          <a
+                            class="cs-sub-link"
+                            href={child.href}
+                            aria-current={child.current ? 'page' : undefined}
+                          >
+                            <span class="cs-sub-num" />
+                            <span class="cs-sub-label">{child.label}</span>
+                          </a>
+                        ) : (
+                          <span class="cs-sub-link cs-disabled" aria-disabled="true">
+                            <span class="cs-sub-num" />
+                            <span class="cs-sub-label">{child.label}</span>
+                          </span>
+                        )}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </li>
+            ))}
+          </ul>
+        </li>
+      ))
+    }
+  </ul>
+
+  <div class="cs-sidebar-footer">
+    <a href="https://canshift.tmbk.ch" target="_blank" rel="noopener">Tuner (web) ↗</a>
+    <a href="https://github.com/CANShift" target="_blank" rel="noopener">GitHub organisation ↗</a>
+  </div>
+</div>
+
+<script>
+  const sidebar = document.querySelector('.cs-sidebar')
+  if (sidebar) {
+    const STORE = 'cs-sidebar-state'
+    const state = JSON.parse(localStorage.getItem(STORE) || '{}')
+    state.groups = state.groups || {}
+    state.pages = state.pages || {}
+    const save = () => localStorage.setItem(STORE, JSON.stringify(state))
+
+    const groups = [...sidebar.querySelectorAll('.cs-group')]
+    const subToggles = [...sidebar.querySelectorAll('.cs-page[data-has-subs="true"]')]
+
+    const setGroup = (group, expanded) => {
+      group.dataset.collapsed = expanded ? 'false' : 'true'
+      group.querySelector('.cs-group-toggle').setAttribute('aria-expanded', String(expanded))
+      state.groups[group.dataset.group] = expanded
+    }
+    const setPage = (page, expanded) => {
+      page.dataset.collapsed = expanded ? 'false' : 'true'
+      page.querySelector('.cs-page-toggle')?.setAttribute('aria-expanded', String(expanded))
+      const key = page.querySelector('.cs-page-label')?.textContent
+      if (key) state.pages[key] = expanded
+    }
+
+    groups.forEach((group) => {
+      const stored = state.groups[group.dataset.group]
+      setGroup(group, stored === undefined ? true : stored)
+      group.querySelector('.cs-group-toggle').addEventListener('click', () => {
+        setGroup(group, group.dataset.collapsed === 'true')
+        save()
+      })
+    })
+
+    subToggles.forEach((page) => {
+      const key = page.querySelector('.cs-page-label')?.textContent
+      const stored = key ? state.pages[key] : undefined
+      const expanded = page.dataset.current === 'true' || stored === true
+      setPage(page, expanded)
+      page.querySelector('.cs-page-toggle')?.addEventListener('click', () => {
+        setPage(page, page.dataset.collapsed === 'true')
+        save()
+      })
+    })
+
+    const current = sidebar.querySelector('[aria-current="page"]')
+    if (current) {
+      const group = current.closest('.cs-group')
+      if (group) setGroup(group, true)
+    }
+    save()
+
+    const expandAll = sidebar.querySelector('.cs-expand-all')
+    expandAll.addEventListener('click', () => {
+      const expand = expandAll.dataset.mode === 'expand'
+      groups.forEach((group) => setGroup(group, expand))
+      subToggles.forEach((page) => setPage(page, expand))
+      expandAll.dataset.mode = expand ? 'collapse' : 'expand'
+      expandAll.textContent = expand ? 'COLLAPSE ALL' : 'EXPAND ALL'
+      save()
+    })
+  }
+</script>
