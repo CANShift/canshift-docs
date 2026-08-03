@@ -1,0 +1,86 @@
+---
+import navModel from '../data/nav-model.json'
+
+const strip = (value) => value.replace(/\/+$/, '')
+const path = strip(Astro.url.pathname)
+const href = (slug) => `/${slug}`
+
+const firstHref = (items) => {
+  for (const item of items) {
+    if (item.exists) return href(item.slug)
+    const child = (item.children ?? []).find((entry) => entry.exists)
+    if (child) return href(child.slug)
+  }
+  return null
+}
+
+const groupHasPath = (group) =>
+  group.items.some(
+    (item) =>
+      path === href(item.slug) ||
+      (item.children ?? []).some((child) => path === href(child.slug))
+  )
+
+const isHome = path === ''
+
+const sections = navModel.groups.map((group) => ({
+  label: group.navLabel,
+  count: group.items.length,
+  target: firstHref(group.items),
+  current: !isHome && groupHasPath(group),
+}))
+
+const hardware = navModel.groups
+  .flatMap((group) => group.items)
+  .find((item) => item.slug === 'technical/reference/hardware-bom')
+
+const trailing = [
+  { label: 'HARDWARE & BOM', target: hardware?.exists ? href(hardware.slug) : null },
+  { label: 'CONTACT', target: null },
+]
+---
+
+<nav class="cs-navbar" aria-label="Sections">
+  <a
+    href="/"
+    class="cs-nav-item cs-nav-home"
+    data-current={isHome ? 'true' : undefined}
+    aria-current={isHome ? 'page' : undefined}
+  >
+    HOME
+  </a>
+  {
+    sections.map((section) =>
+      section.target ? (
+        <a
+          href={section.target}
+          class="cs-nav-item"
+          data-current={section.current ? 'true' : undefined}
+          aria-current={section.current ? 'page' : undefined}
+        >
+          {section.label}
+          <span class="cs-nav-count">{section.count}</span>
+        </a>
+      ) : (
+        <span class="cs-nav-item cs-nav-disabled" aria-disabled="true">
+          {section.label}
+          <span class="cs-nav-count">{section.count}</span>
+        </span>
+      )
+    )
+  }
+  <span class="cs-nav-spacer"></span>
+  {
+    trailing.map((item) =>
+      item.target ? (
+        <a href={item.target} class="cs-nav-item cs-nav-trailing">
+          {item.label}
+        </a>
+      ) : (
+        <span class="cs-nav-item cs-nav-trailing cs-nav-disabled" aria-disabled="true">
+          {item.label}
+        </span>
+      )
+    )
+  }
+</nav>

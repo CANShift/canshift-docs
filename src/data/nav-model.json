@@ -5,8 +5,11 @@
       "id": "g1",
       "num": "1",
       "label": "USER GUIDE",
+      "navLabel": "GUIDE",
       "audiences": ["driver", "tuner", "dev"],
-      "icon": { "repoMarkPaths": ["M18 18 H98 V84 H18 Z", "M58 60 H82"] },
+      "icon": {
+        "repoMarkPaths": ["M18 18 H98 V84 H18 Z", "M58 60 H82"]
+      },
       "items": [
         {
           "num": "1.1",
@@ -96,8 +99,11 @@
       "id": "g2",
       "num": "2",
       "label": "FIRMWARE ARCHITECTURE",
+      "navLabel": "FIRMWARE",
       "audiences": ["dev"],
-      "icon": { "repoMarkPaths": ["M14 68 H46 V30 H62", "M62 30 V68 H100"] },
+      "icon": {
+        "repoMarkPaths": ["M14 68 H46 V30 H62", "M62 30 V68 H100"]
+      },
       "items": [
         {
           "num": "2.1",
@@ -167,8 +173,11 @@
       "id": "g3",
       "num": "3",
       "label": "REFERENCE",
+      "navLabel": "REFERENCE",
       "audiences": ["tuner", "dev"],
-      "icon": { "repoMarkPaths": ["M16 28 H100 V72 H16 Z", "M68 50 H82"] },
+      "icon": {
+        "repoMarkPaths": ["M16 28 H100 V72 H16 Z", "M68 50 H82"]
+      },
       "items": [
         {
           "num": "3.1",
@@ -265,8 +274,11 @@
       "id": "g4",
       "num": "4",
       "label": "TUNER & MOBILE APP",
+      "navLabel": "TUNER & APP",
       "audiences": ["driver", "tuner"],
-      "icon": { "repoMarkPaths": ["M18 32 H98 M18 68 H98", "M42 20 V44 M74 56 V80"] },
+      "icon": {
+        "repoMarkPaths": ["M18 32 H98 M18 68 H98", "M42 20 V44 M74 56 V80"]
+      },
       "items": [
         {
           "num": "4.1",
@@ -302,8 +314,11 @@
       "id": "g5",
       "num": "5",
       "label": "CONTRIBUTING",
+      "navLabel": "CONTRIBUTING",
       "audiences": ["dev"],
-      "icon": { "repoMarkPaths": ["M22 78 V60 M50 78 V44", "M78 78 V28"] },
+      "icon": {
+        "repoMarkPaths": ["M22 78 V60 M50 78 V44", "M78 78 V28"]
+      },
       "items": [
         {
           "num": "5.1",
@@ -340,8 +355,20 @@
           "exists": true,
           "children": []
         },
-        { "num": "5.6", "label": "Changelog", "slug": "changelog", "exists": true, "children": [] },
-        { "num": "5.7", "label": "Roadmap", "slug": "roadmap", "exists": true, "children": [] }
+        {
+          "num": "5.6",
+          "label": "Changelog",
+          "slug": "changelog",
+          "exists": true,
+          "children": []
+        },
+        {
+          "num": "5.7",
+          "label": "Roadmap",
+          "slug": "roadmap",
+          "exists": true,
+          "children": []
+        }
       ]
     }
   ]
