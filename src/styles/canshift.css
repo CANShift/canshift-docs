@@ -1,4 +1,17 @@
-@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap');
+@font-face {
+  font-family: 'Archivo';
+  font-style: normal;
+  font-weight: 400 800;
+  font-display: swap;
+  src: url('/fonts/archivo.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('/fonts/jetbrains-mono.woff2') format('woff2');
+}
 
 :root {
   --cs-accent: #ec3013;
@@ -31,6 +44,7 @@
   --sl-nav-height: 4rem;
   --sl-sidebar-width: 17.875rem;
   --sl-content-width: 53.75rem;
+  --sl-text-base: 1.03125rem;
   --sl-text-h1: 3.25rem;
   --sl-text-h2: 1.6875rem;
   --sl-text-h3: 1.3125rem;
@@ -212,6 +226,7 @@ starlight-theme-select {
   content: counter(cs-group) '.' counter(cs-item);
   font-family: var(--sl-font-mono);
   font-size: 0.75rem;
+  font-variant-numeric: tabular-nums;
   opacity: 0.6;
   flex: none;
 }
@@ -227,6 +242,9 @@ starlight-theme-select {
   padding: 2.5rem 3.5rem;
 }
 
+.sl-markdown-content {
+  font-size: var(--sl-text-body);
+}
 .sl-markdown-content h1,
 .sl-markdown-content h2,
 .sl-markdown-content h3 {
@@ -241,9 +259,10 @@ starlight-theme-select {
   margin-top: 2.5rem;
   padding-top: 1.125rem;
   border-top: 1px solid var(--cs-line);
+  letter-spacing: -0.02em;
 }
 .sl-markdown-content :is(p, li) {
-  line-height: 1.68;
+  line-height: 1.78;
   text-wrap: pretty;
 }
 .sl-markdown-content a {
