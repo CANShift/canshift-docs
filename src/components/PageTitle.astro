@@ -29,11 +29,11 @@ const updated = route.lastUpdated instanceof Date ? route.lastUpdated : null
 const updatedLabel = updated ? updated.toLocaleDateString('en-GB').replace(/\//g, '.') : null
 ---
 
-<div class="cs-crumbs">
+<nav class="cs-crumbs" aria-label="Breadcrumb">
   {groupLabel && <span>{groupLabel}</span>}
-  {groupLabel && <span class="cs-crumbs-sep">/</span>}
-  <span class="cs-crumbs-current">{pageLabel}</span>
-</div>
+  {groupLabel && <span class="cs-crumbs-sep" aria-hidden="true">/</span>}
+  <span class="cs-crumbs-current" aria-current="page">{pageLabel}</span>
+</nav>
 
 <h1 id="_top">{data.title}</h1>
 {data.description && <p class="cs-lede">{data.description}</p>}
