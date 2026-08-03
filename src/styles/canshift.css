@@ -29,6 +29,7 @@
   --cs-code-ink: #e8e6e3;
   --cs-code-dim: #6f6b68;
   --cs-code-file: #8f8b88;
+  --cs-code-lang: #ff4747;
   --cs-code-rule: rgba(255, 255, 255, 0.12);
   --cs-code-btn-border: rgba(255, 255, 255, 0.15);
 
@@ -272,7 +273,7 @@ starlight-theme-select {
 
 .sl-markdown-content :not(pre) > code {
   font-family: var(--sl-font-mono);
-  font-size: 0.875em;
+  font-size: 0.875rem;
   padding: 2px 5px;
   background: var(--cs-sunk);
   border: 1px solid var(--cs-line);
@@ -284,6 +285,9 @@ starlight-theme-select {
   border: 1px solid var(--cs-line);
   box-shadow: none;
   background: var(--cs-code-bg);
+}
+.expressive-code .frame {
+  position: relative;
 }
 .expressive-code .frame pre,
 .sl-markdown-content pre {
@@ -298,7 +302,56 @@ starlight-theme-select {
   border: 0;
   border-bottom: 1px solid var(--cs-code-rule);
   background: var(--cs-code-bg);
-  padding: 0.5625rem 0.875rem;
+  padding: 0 0.875rem;
+}
+.expressive-code .frame.is-terminal .header,
+.expressive-code .frame:has(pre[data-language='json']) .header,
+.expressive-code .frame:has(pre[data-language='jsonc']) .header,
+.expressive-code .frame:has(pre[data-language='cpp']) .header,
+.expressive-code .frame:has(pre[data-language='ts']) .header,
+.expressive-code .frame:has(pre[data-language='markdown']) .header,
+.expressive-code .frame:has(pre[data-language='ini']) .header {
+  display: flex;
+  align-items: center;
+  min-height: 2.25rem;
+}
+.expressive-code .frame .header::after {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: auto;
+  display: flex;
+  align-items: center;
+  padding: 0 0.875rem;
+  border-left: 1px solid var(--cs-code-rule);
+  font-family: var(--sl-font-mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--cs-code-lang);
+}
+.expressive-code .frame:has(pre[data-language='bash']) .header::after,
+.expressive-code .frame:has(pre[data-language='sh']) .header::after {
+  content: 'bash';
+}
+.expressive-code .frame:has(pre[data-language='json']) .header::after {
+  content: 'json';
+}
+.expressive-code .frame:has(pre[data-language='jsonc']) .header::after {
+  content: 'jsonc';
+}
+.expressive-code .frame:has(pre[data-language='cpp']) .header::after {
+  content: 'cpp';
+}
+.expressive-code .frame:has(pre[data-language='ts']) .header::after {
+  content: 'ts';
+}
+.expressive-code .frame:has(pre[data-language='markdown']) .header::after {
+  content: 'markdown';
+}
+.expressive-code .frame:has(pre[data-language='ini']) .header::after {
+  content: 'ini';
 }
 .expressive-code .frame .title {
   font-family: var(--sl-font-mono);
