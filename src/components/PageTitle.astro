@@ -4,6 +4,8 @@ import navModel from '../data/nav-model.json'
 const route = Astro.locals.starlightRoute
 const data = route.entry.data
 
+const isSplash = data.template === 'splash'
+
 const strip = (value) => value.replace(/\/+$/, '')
 const path = strip(Astro.url.pathname)
 const href = (slug) => `/${slug}`
@@ -29,18 +31,30 @@ const updated = route.lastUpdated instanceof Date ? route.lastUpdated : null
 const updatedLabel = updated ? updated.toLocaleDateString('en-GB').replace(/\//g, '.') : null
 ---
 
-<nav class="cs-crumbs" aria-label="Breadcrumb">
-  {groupLabel && <span>{groupLabel}</span>}
-  {groupLabel && <span class="cs-crumbs-sep" aria-hidden="true">/</span>}
-  <span class="cs-crumbs-current" aria-current="page">{pageLabel}</span>
-</nav>
+{
+  !isSplash && (
+    <>
+      <nav class="cs-crumbs" aria-label="Breadcrumb">
+        {groupLabel && <span>{groupLabel}</span>}
+        {groupLabel && (
+          <span class="cs-crumbs-sep" aria-hidden="true">
+            /
+          </span>
+        )}
+        <span class="cs-crumbs-current" aria-current="page">
+          {pageLabel}
+        </span>
+      </nav>
 
-<h1 id="_top">{data.title}</h1>
-{data.description && <p class="cs-lede">{data.description}</p>}
+      <h1 id="_top">{data.title}</h1>
+      {data.description && <p class="cs-lede">{data.description}</p>}
 
-<div class="cs-badges">
-  {data.fw && <span class="cs-badge cs-badge-accent">FW {data.fw}</span>}
-  {data.wire && <span class="cs-badge">WIRE {data.wire}</span>}
-  {data.source && <span class="cs-badge">{data.source}</span>}
-  {updatedLabel && <span class="cs-badge">UPD {updatedLabel}</span>}
-</div>
+      <div class="cs-badges">
+        {data.fw && <span class="cs-badge cs-badge-accent">FW {data.fw}</span>}
+        {data.wire && <span class="cs-badge">WIRE {data.wire}</span>}
+        {data.source && <span class="cs-badge">{data.source}</span>}
+        {updatedLabel && <span class="cs-badge">UPD {updatedLabel}</span>}
+      </div>
+    </>
+  )
+}

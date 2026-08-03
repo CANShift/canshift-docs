@@ -1,0 +1,21 @@
+---
+interface GlanceItem {
+  k: string
+  v: string
+  note?: string
+}
+
+const { items = [] } = Astro.props as { items: GlanceItem[] }
+---
+
+<div class="cs-glance">
+  {
+    items.map((item) => (
+      <div class="cs-glance__cell">
+        <div class="cs-glance__k">{item.k}</div>
+        <div class="cs-glance__v">{item.v}</div>
+        {item.note && <div class="cs-glance__note">{item.note}</div>}
+      </div>
+    ))
+  }
+</div>
