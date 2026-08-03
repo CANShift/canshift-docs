@@ -3,6 +3,8 @@ title: 'USB transport'
 description: 'Sinks, locks, and the PUT_CONFIG burn flow.'
 sidebar:
   order: 40
+source: 'src/hal/usb/usb_comm.cpp'
+wire: 'v2'
 ---
 
 USB CDC is the dash's primary host link to canshift-tuner: command/response

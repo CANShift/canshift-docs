@@ -3,6 +3,7 @@ title: 'Build flags'
 description: 'PlatformIO env build_flags that change firmware behaviour.'
 sidebar:
   order: 2
+source: 'platformio.ini'
 ---
 
 The firmware's compile-time behaviour is steered by macros set in

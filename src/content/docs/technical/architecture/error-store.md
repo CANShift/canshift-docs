@@ -3,6 +3,7 @@ title: 'ErrorStore'
 description: 'Firmware error ring buffer + critical-section invariant.'
 sidebar:
   order: 70
+source: 'src/diag/error_store.cpp'
 ---
 
 ErrorStore is the firmware's single source of truth for "what went wrong"

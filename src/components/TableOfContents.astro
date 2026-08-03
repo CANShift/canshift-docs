@@ -10,19 +10,23 @@ const strip = (value) => value.replace(/\/+$/, '')
 const path = strip(Astro.url.pathname)
 const href = (slug) => `/${slug}`
 
-const group = navModel.groups.find((entry) =>
-  entry.items.some(
-    (item) =>
-      path === href(item.slug) || (item.children ?? []).some((child) => path === href(child.slug))
-  )
-)
-
 const reportBase = {
   firmware: 'https://github.com/CANShift/canshift-firmware/issues/new',
   tuner: 'https://github.com/CANShift/canshift-tuner/issues/new',
   docs: 'https://github.com/CANShift/canshift-docs/issues/new',
 }
-const reportUrl = reportBase[group?.reportRepo] ?? reportBase.docs
+
+const reportRepoForPath = () => {
+  for (const group of navModel.groups) {
+    for (const item of group.items) {
+      if (path === href(item.slug)) return item.reportRepo ?? group.reportRepo
+      const child = (item.children ?? []).find((entry) => path === href(entry.slug))
+      if (child) return child.reportRepo ?? item.reportRepo ?? group.reportRepo
+    }
+  }
+  return 'docs'
+}
+const reportUrl = reportBase[reportRepoForPath()] ?? reportBase.docs
 
 const hasHeadings = Boolean(toc && toc.items.some((item) => item.slug !== '_top'))
 ---

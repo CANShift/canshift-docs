@@ -3,6 +3,7 @@ title: 'Pinout — CrowPanel 2.8"'
 description: 'GPIO reference for the ESP32 board + ILI9341 display + XPT2046 touch.'
 sidebar:
   order: 1
+source: 'include/board_config.h'
 ---
 
 | Function  | GPIO | Note                                     |

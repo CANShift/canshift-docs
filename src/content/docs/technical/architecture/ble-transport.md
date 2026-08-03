@@ -3,6 +3,7 @@ title: 'BLE transport'
 description: 'NimBLE topology, GATT layout, and the stop-race snapshot pattern.'
 sidebar:
   order: 50
+source: 'src/hal/ble/ble_server.cpp'
 ---
 
 The BLE stack is the optional secondary transport (USB is primary).
