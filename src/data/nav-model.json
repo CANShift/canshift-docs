@@ -201,22 +201,19 @@
               "num": "3.2.1",
               "label": "Display bus",
               "slug": "technical/reference/pinout-display",
-              "exists": true,
-              "placeholder": true
+              "exists": true
             },
             {
               "num": "3.2.2",
               "label": "CAN header",
               "slug": "technical/reference/pinout-can",
-              "exists": true,
-              "placeholder": true
+              "exists": true
             },
             {
               "num": "3.2.3",
               "label": "Power rails",
               "slug": "technical/reference/pinout-power",
-              "exists": true,
-              "placeholder": true
+              "exists": true
             }
           ]
         },
