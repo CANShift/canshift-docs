@@ -111,6 +111,7 @@ const trailing = [
                 role="menuitem"
                 tabindex="-1"
                 aria-disabled="true"
+                aria-current={row.aria}
               >
                 <span class="cs-nav-row-num">{row.num}</span>
                 <span class="cs-nav-row-label">{row.label}</span>
@@ -180,8 +181,10 @@ const trailing = [
         } else if (event.key === 'Escape') {
           event.preventDefault()
           setOpen(section, false)
-          section.dataset.suppress = 'true'
-          header.focus()
+          if (document.activeElement !== header) {
+            section.dataset.suppress = 'true'
+            header.focus()
+          }
         }
       })
     })
