@@ -601,12 +601,62 @@ starlight-theme-select {
   color: var(--cs-ink);
 }
 
-.content-panel + .content-panel {
-  border-top: 2px solid var(--cs-rule);
-}
 .content-panel {
   border: 0;
-  padding: 2.5rem 3.5rem;
+  padding: 4rem 4.5rem 1.625rem;
+}
+.content-panel + .content-panel {
+  border-top: 2px solid var(--cs-rule);
+  padding-top: 2.875rem;
+  padding-bottom: 8rem;
+}
+
+.cs-crumbs {
+  display: flex;
+  align-items: center;
+  gap: 0.5625rem;
+  margin-bottom: 1.375rem;
+  font-family: var(--sl-font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--cs-faint);
+}
+.cs-crumbs-current {
+  color: var(--cs-accent);
+}
+h1#_top {
+  margin: 0 0 0.875rem;
+  font-size: var(--sl-text-h1);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 1;
+}
+.cs-lede {
+  max-width: 60ch;
+  margin: 0 0 1.375rem;
+  font-size: 1.1875rem;
+  line-height: 1.5;
+  color: var(--cs-muted);
+  text-wrap: pretty;
+}
+.cs-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.cs-badge {
+  padding: 4px 8px;
+  border: 1px solid var(--cs-line);
+  font-family: var(--sl-font-mono);
+  font-size: 0.6875rem;
+  color: var(--cs-muted);
+}
+.cs-badge-accent {
+  background: var(--cs-accent);
+  border-color: var(--cs-accent);
+  color: var(--cs-on-accent);
+  font-weight: 700;
 }
 
 .sl-markdown-content {
@@ -623,7 +673,7 @@ starlight-theme-select {
   line-height: 1;
 }
 .sl-markdown-content h2 {
-  margin-top: 2.5rem;
+  margin-top: 3.5rem;
   padding-top: 1.125rem;
   border-top: 1px solid var(--cs-line);
   letter-spacing: -0.02em;

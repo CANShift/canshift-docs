@@ -1,6 +1,9 @@
 ---
 title: 'Boot sequence'
 description: 'Heap reservation ordering that makes the boot path work on a no-PSRAM WROOM.'
+fw: '≥ 1.6.0'
+wire: 'v2'
+source: 'src/boot/boot_sequence.cpp'
 sidebar:
   order: 10
 ---
