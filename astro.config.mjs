@@ -97,6 +97,7 @@ export default defineConfig({
         TableOfContents: './src/components/TableOfContents.astro',
         Pagination: './src/components/Pagination.astro',
         MarkdownContent: './src/components/MarkdownContent.astro',
+        Search: './src/components/Search.astro',
       },
       head: [
         {

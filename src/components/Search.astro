@@ -1,0 +1,260 @@
+---
+---
+
+<cs-search>
+  <button type="button" class="cs-search-trigger" data-cs-open aria-keyshortcuts="Meta+K Control+K" aria-label="Search the docs">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+      <circle cx="11" cy="11" r="7"></circle>
+      <path d="M20 20l-4-4"></path>
+    </svg>
+    <span class="cs-search-trigger-label">Search the docs</span>
+    <kbd class="cs-search-trigger-kbd">⌘K</kbd>
+  </button>
+
+  <dialog class="cs-palette" aria-label="Search the docs">
+    <div class="cs-palette-head">
+      <svg class="cs-palette-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <circle cx="11" cy="11" r="7"></circle>
+        <path d="M20 20l-4-4"></path>
+      </svg>
+      <input
+        type="search"
+        class="cs-palette-input"
+        data-cs-input
+        placeholder="Search the docs"
+        autocomplete="off"
+        autocorrect="off"
+        spellcheck="false"
+        role="combobox"
+        aria-expanded="true"
+        aria-controls="cs-palette-results"
+      />
+      <span class="cs-palette-count" data-cs-count aria-live="polite"></span>
+      <kbd class="cs-palette-esc">ESC</kbd>
+    </div>
+    <div class="cs-palette-results" id="cs-palette-results" role="listbox" data-cs-results></div>
+    <p class="cs-palette-empty" data-cs-empty>Type to search the docs.</p>
+    <div class="cs-palette-foot">
+      <span>↑↓ navigate</span>
+      <span>↵ open</span>
+      <span>esc close</span>
+      <span class="cs-palette-foot-spacer"></span>
+      <span>Pagefind</span>
+    </div>
+  </dialog>
+</cs-search>
+
+<script>
+  import { sectionForPath } from '../lib/nav'
+
+  interface ResultItem {
+    url: string
+    title: string
+    excerpt: string
+    label: string
+    order: number
+  }
+
+  let pagefind: any = null
+  let pagefindLoad: Promise<any> | null = null
+
+  const loadPagefind = (): Promise<any> => {
+    if (pagefind) return Promise.resolve(pagefind)
+    if (!pagefindLoad) {
+      pagefindLoad = import(/* @vite-ignore */ `${import.meta.env.BASE_URL}pagefind/pagefind.js`)
+        .then((mod) => {
+          pagefind = mod
+          return mod
+        })
+        .catch(() => null)
+    }
+    return pagefindLoad
+  }
+
+  class CsSearch extends HTMLElement {
+    dialog!: HTMLDialogElement
+    input!: HTMLInputElement
+    list!: HTMLElement
+    count!: HTMLElement
+    empty!: HTMLElement
+    items: ResultItem[] = []
+    selected = -1
+    timer = 0
+
+    connectedCallback() {
+      this.dialog = this.querySelector('dialog')!
+      this.input = this.querySelector('[data-cs-input]')!
+      this.list = this.querySelector('[data-cs-results]')!
+      this.count = this.querySelector('[data-cs-count]')!
+      this.empty = this.querySelector('[data-cs-empty]')!
+
+      const trigger = this.querySelector('[data-cs-open]')!
+      trigger.removeAttribute('disabled')
+      trigger.addEventListener('click', () => this.open())
+      this.input.addEventListener('input', () => this.schedule())
+      this.dialog.addEventListener('keydown', (event) => this.onKeydown(event))
+      this.dialog.addEventListener('click', (event) => {
+        if (event.target === this.dialog) this.close()
+      })
+      this.dialog.addEventListener('close', () => this.reset())
+      document.addEventListener('keydown', (event) => this.onGlobalKey(event))
+    }
+
+    onGlobalKey(event: KeyboardEvent) {
+      if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
+        event.preventDefault()
+        this.dialog.open ? this.close() : this.open()
+      }
+    }
+
+    open() {
+      if (this.dialog.open) return
+      this.dialog.showModal()
+      this.input.focus()
+      loadPagefind()
+    }
+
+    close() {
+      if (this.dialog.open) this.dialog.close()
+    }
+
+    reset() {
+      this.input.value = ''
+      this.list.replaceChildren()
+      this.items = []
+      this.selected = -1
+      this.count.textContent = ''
+      this.empty.hidden = false
+      this.empty.textContent = 'Type to search the docs.'
+    }
+
+    onKeydown(event: KeyboardEvent) {
+      if (event.key === 'Escape') {
+        event.preventDefault()
+        this.close()
+      } else if (event.key === 'ArrowDown') {
+        event.preventDefault()
+        this.move(1)
+      } else if (event.key === 'ArrowUp') {
+        event.preventDefault()
+        this.move(-1)
+      } else if (event.key === 'Enter') {
+        const item = this.items[this.selected]
+        if (!item) return
+        event.preventDefault()
+        if (event.shiftKey) window.open(item.url, '_blank', 'noopener')
+        else window.location.assign(item.url)
+      }
+    }
+
+    move(delta: number) {
+      if (!this.items.length) return
+      this.selected = (this.selected + delta + this.items.length) % this.items.length
+      this.paintSelection()
+    }
+
+    paintSelection() {
+      const rows = this.list.querySelectorAll<HTMLElement>('[data-cs-result]')
+      rows.forEach((row, index) => {
+        const active = index === this.selected
+        row.classList.toggle('is-selected', active)
+        row.setAttribute('aria-selected', active ? 'true' : 'false')
+        if (active) {
+          row.scrollIntoView({ block: 'nearest' })
+          this.input.setAttribute('aria-activedescendant', row.id)
+        }
+      })
+    }
+
+    schedule() {
+      window.clearTimeout(this.timer)
+      this.timer = window.setTimeout(() => this.run(this.input.value.trim()), 140)
+    }
+
+    async run(query: string) {
+      if (!query) {
+        this.list.replaceChildren()
+        this.items = []
+        this.selected = -1
+        this.count.textContent = ''
+        this.empty.hidden = false
+        this.empty.textContent = 'Type to search the docs.'
+        return
+      }
+      const engine = await loadPagefind()
+      if (!engine) {
+        this.empty.hidden = false
+        this.empty.textContent = 'Search runs on the built site.'
+        return
+      }
+      const search = await engine.debouncedSearch(query)
+      if (!search) return
+      const data = await Promise.all(search.results.slice(0, 24).map((result: any) => result.data()))
+      this.items = data.map((entry: any) => {
+        const path = new URL(entry.url, window.location.origin).pathname
+        const section = sectionForPath(path)
+        return {
+          url: entry.url,
+          title: entry.meta?.title ?? entry.url,
+          excerpt: entry.excerpt,
+          label: section.label,
+          order: section.order,
+        }
+      })
+      this.render()
+    }
+
+    render() {
+      const groups = new Map<number, { label: string; items: ResultItem[] }>()
+      for (const item of this.items) {
+        const group = groups.get(item.order) ?? { label: item.label, items: [] }
+        group.items.push(item)
+        groups.set(item.order, group)
+      }
+      const ordered = [...groups.entries()].sort((a, b) => a[0] - b[0]).map(([, group]) => group)
+      this.items = ordered.flatMap((group) => group.items)
+
+      const fragment = document.createDocumentFragment()
+      let index = 0
+      for (const group of ordered) {
+        const heading = document.createElement('div')
+        heading.className = 'cs-palette-group'
+        heading.textContent = group.label
+        fragment.append(heading)
+        for (const item of group.items) {
+          const row = document.createElement('a')
+          row.className = 'cs-palette-result'
+          row.href = item.url
+          row.id = `cs-palette-result-${index}`
+          row.dataset.csResult = ''
+          row.setAttribute('role', 'option')
+          const rowIndex = index
+          row.addEventListener('mousemove', () => {
+            if (this.selected === rowIndex) return
+            this.selected = rowIndex
+            this.paintSelection()
+          })
+          const title = document.createElement('div')
+          title.className = 'cs-palette-result-title'
+          title.textContent = item.title
+          const excerpt = document.createElement('div')
+          excerpt.className = 'cs-palette-result-excerpt'
+          excerpt.innerHTML = item.excerpt
+          row.append(title, excerpt)
+          fragment.append(row)
+          index += 1
+        }
+      }
+
+      this.list.replaceChildren(fragment)
+      const total = this.items.length
+      this.count.textContent = total ? `${total} result${total === 1 ? '' : 's'}` : ''
+      this.empty.hidden = total > 0
+      if (!total) this.empty.textContent = 'No matches.'
+      this.selected = total ? 0 : -1
+      this.paintSelection()
+    }
+  }
+
+  if (!customElements.get('cs-search')) customElements.define('cs-search', CsSearch)
+</script>
