@@ -55,16 +55,30 @@
     order: number
   }
 
-  let pagefind: any = null
-  let pagefindLoad: Promise<any> | null = null
+  interface PagefindEntry {
+    url: string
+    meta: { title?: string }
+    excerpt: string
+  }
 
-  const loadPagefind = (): Promise<any> => {
+  interface PagefindResult {
+    data(): Promise<PagefindEntry>
+  }
+
+  interface PagefindApi {
+    debouncedSearch(term: string): Promise<{ results: PagefindResult[] } | null>
+  }
+
+  let pagefind: PagefindApi | null = null
+  let pagefindLoad: Promise<PagefindApi | null> | null = null
+
+  const loadPagefind = (): Promise<PagefindApi | null> => {
     if (pagefind) return Promise.resolve(pagefind)
     if (!pagefindLoad) {
       pagefindLoad = import(/* @vite-ignore */ `${import.meta.env.BASE_URL}pagefind/pagefind.js`)
         .then((mod) => {
-          pagefind = mod
-          return mod
+          pagefind = mod as PagefindApi
+          return pagefind
         })
         .catch(() => null)
     }
@@ -189,8 +203,10 @@
       }
       const search = await engine.debouncedSearch(query)
       if (!search) return
-      const data = await Promise.all(search.results.slice(0, 24).map((result: any) => result.data()))
-      this.items = data.map((entry: any) => {
+      const data = await Promise.all(
+        search.results.slice(0, 24).map((result: PagefindResult) => result.data())
+      )
+      this.items = data.map((entry: PagefindEntry) => {
         const path = new URL(entry.url, window.location.origin).pathname
         const section = sectionForPath(path)
         return {
