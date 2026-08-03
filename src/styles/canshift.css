@@ -2282,3 +2282,46 @@ a.cs-pager-cell:active,
 .cs-bom .cs-bom-total-accent .cs-bom-price {
   color: var(--cs-accent);
 }
+
+@media (max-width: 67.5rem) {
+  .cs-search-trigger-label,
+  .cs-search-trigger-kbd {
+    display: none;
+  }
+  .cs-search-trigger {
+    width: auto;
+    max-width: none;
+    gap: 0;
+    justify-content: center;
+    padding-inline: 1.125rem;
+  }
+}
+
+@media (max-width: 40rem) {
+  :root {
+    --sl-text-h1: 2.375rem;
+  }
+  .cs-hero-title {
+    font-size: clamp(2.25rem, 11vw, 2.875rem);
+  }
+  .cs-404-title,
+  .cs-contact-title {
+    font-size: 2.25rem;
+  }
+}
+
+@media (max-width: 56.25rem) {
+  .cs-navbar {
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .cs-navbar::-webkit-scrollbar {
+    display: none;
+  }
+  .cs-navbar .cs-nav-spacer {
+    display: none;
+  }
+  .cs-nav-panel {
+    display: none;
+  }
+}
