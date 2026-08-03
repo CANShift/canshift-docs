@@ -1,0 +1,26 @@
+---
+title: 'Hardware & BOM'
+description: 'Everything needed to build one dash — the reference parts, with prices and suppliers per region.'
+---
+
+import BomTable from '../../../../components/BomTable.astro'
+
+Everything needed to build one dash: the reference parts, with an indicative price and a supplier for each region. Pick where you ship to and the table re-prices.
+
+<BomTable />
+
+## Substitutions that work
+
+**Any ESP32 + ILI9341 panel.** Keep the GPIO contract from [Pinout](/technical/reference/pinout/) and the firmware builds unchanged. WROVER boards work too — the PSRAM is simply left unused.
+
+**SN65HVD230 instead of the TJA1051.** Cheaper and widely cloned. Ground the slew-rate pin; expect more errors above 500 kbit/s.
+
+**A Western distributor instead of AliExpress.** Mouser and DigiKey stock equivalent ESP32 panels — a little more money, a couple of weeks less waiting.
+
+:::caution[CAUTION]
+Do not fit the 120 Ω terminators unless the dash sits at a physical end of the bus. Most cars are already terminated at both ends — a third resistor drops the bus to ~40 Ω and the ECU stops talking.
+:::
+
+:::note
+Prices are indicative and were not taken from a live feed — treat them as a starting point, not a quote, and always excluding tax and shipping. Found a better source, or a part that went out of stock? [Open an issue](https://github.com/CANShift/canshift-docs/issues).
+:::
