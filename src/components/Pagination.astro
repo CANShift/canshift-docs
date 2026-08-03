@@ -1,0 +1,44 @@
+---
+import navModel from '../data/nav-model.json'
+
+const strip = (value) => value.replace(/\/+$/, '')
+const path = strip(Astro.url.pathname)
+const href = (slug) => `/${slug}`
+
+const flat = []
+for (const group of navModel.groups) {
+  for (const item of group.items) {
+    if (item.exists) flat.push({ href: href(item.slug), label: item.label })
+    for (const child of item.children ?? []) {
+      if (child.exists) flat.push({ href: href(child.slug), label: child.label })
+    }
+  }
+}
+
+const index = flat.findIndex((entry) => entry.href === path)
+const prev = index > 0 ? flat[index - 1] : null
+const next = index >= 0 && index < flat.length - 1 ? flat[index + 1] : null
+---
+
+{
+  (prev || next) && (
+    <nav class="cs-pager print:hidden" aria-label="Pagination">
+      {prev ? (
+        <a class="cs-pager-cell" href={prev.href} rel="prev">
+          <span class="cs-pager-kicker">← Previous</span>
+          <span class="cs-pager-title">{prev.label}</span>
+        </a>
+      ) : (
+        <span class="cs-pager-cell cs-pager-empty" aria-hidden="true" />
+      )}
+      {next ? (
+        <a class="cs-pager-cell cs-pager-next" href={next.href} rel="next">
+          <span class="cs-pager-kicker">Next →</span>
+          <span class="cs-pager-title">{next.label}</span>
+        </a>
+      ) : (
+        <span class="cs-pager-cell cs-pager-empty" aria-hidden="true" />
+      )}
+    </nav>
+  )
+}

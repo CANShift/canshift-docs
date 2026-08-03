@@ -94,6 +94,7 @@ export default defineConfig({
         Sidebar: './src/components/Sidebar.astro',
         PageSidebar: './src/components/PageSidebar.astro',
         TableOfContents: './src/components/TableOfContents.astro',
+        Pagination: './src/components/Pagination.astro',
       },
       head: [
         {
