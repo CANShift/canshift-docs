@@ -124,7 +124,7 @@ export default defineConfig({
           ],
         },
       ],
-      customCss: ['./src/styles/custom.css'],
+      customCss: ['./src/styles/canshift.css'],
       lastUpdated: true,
       pagination: true,
     }),
