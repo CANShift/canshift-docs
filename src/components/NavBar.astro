@@ -21,13 +21,28 @@ const groupHasPath = (group) =>
       (item.children ?? []).some((child) => path === href(child.slug))
   )
 
-const isHome = path === ''
+const rowAria = (item) => {
+  if (path === href(item.slug)) return 'page'
+  if ((item.children ?? []).some((child) => path === href(child.slug))) return 'location'
+  return undefined
+}
 
-const sections = navModel.groups.map((group) => ({
+const isHome = path === ''
+const rightmost = navModel.groups.length - 2
+
+const sections = navModel.groups.map((group, index) => ({
   label: group.navLabel,
   count: group.items.length,
   target: firstHref(group.items),
   current: !isHome && groupHasPath(group),
+  anchorRight: index >= rightmost,
+  rows: group.items.map((item) => ({
+    num: item.num,
+    label: item.label,
+    href: item.exists ? href(item.slug) : null,
+    more: (item.children ?? []).length,
+    aria: rowAria(item),
+  })),
 }))
 
 const hardware = navModel.groups
@@ -50,24 +65,62 @@ const trailing = [
     HOME
   </a>
   {
-    sections.map((section) =>
-      section.target ? (
-        <a
-          href={section.target}
-          class="cs-nav-item"
-          data-current={section.current ? 'true' : undefined}
-          aria-current={section.current ? 'location' : undefined}
-        >
-          {section.label}
-          <span class="cs-nav-count">{section.count}</span>
-        </a>
-      ) : (
-        <span class="cs-nav-item cs-nav-disabled" aria-disabled="true">
-          {section.label}
-          <span class="cs-nav-count">{section.count}</span>
-        </span>
-      )
-    )
+    sections.map((section) => (
+      <div class="cs-nav-section" data-anchor={section.anchorRight ? 'right' : undefined}>
+        {section.target ? (
+          <a
+            href={section.target}
+            class="cs-nav-item"
+            data-current={section.current ? 'true' : undefined}
+            aria-current={section.current ? 'location' : undefined}
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            {section.label}
+            <span class="cs-nav-count">{section.count}</span>
+          </a>
+        ) : (
+          <span
+            class="cs-nav-item cs-nav-disabled"
+            tabindex="0"
+            aria-disabled="true"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            {section.label}
+            <span class="cs-nav-count">{section.count}</span>
+          </span>
+        )}
+        <div class="cs-nav-panel" role="menu" aria-label={section.label}>
+          {section.rows.map((row) =>
+            row.href ? (
+              <a
+                href={row.href}
+                class="cs-nav-row"
+                role="menuitem"
+                tabindex="-1"
+                aria-current={row.aria}
+              >
+                <span class="cs-nav-row-num">{row.num}</span>
+                <span class="cs-nav-row-label">{row.label}</span>
+                {row.more > 0 && <span class="cs-nav-row-more">+{row.more}</span>}
+              </a>
+            ) : (
+              <span
+                class="cs-nav-row cs-nav-disabled"
+                role="menuitem"
+                tabindex="-1"
+                aria-disabled="true"
+              >
+                <span class="cs-nav-row-num">{row.num}</span>
+                <span class="cs-nav-row-label">{row.label}</span>
+                {row.more > 0 && <span class="cs-nav-row-more">+{row.more}</span>}
+              </span>
+            )
+          )}
+        </div>
+      </div>
+    ))
   }
   <span class="cs-nav-spacer"></span>
   {
@@ -84,3 +137,53 @@ const trailing = [
     )
   }
 </nav>
+
+<script>
+  const nav = document.querySelector('.cs-navbar')
+  if (nav) {
+    const sections = [...nav.querySelectorAll('.cs-nav-section')]
+    const setOpen = (section, open) => {
+      section.dataset.open = open ? 'true' : 'false'
+      section
+        .querySelector('.cs-nav-item')
+        ?.setAttribute('aria-expanded', open ? 'true' : 'false')
+    }
+    const closeAll = () => sections.forEach((section) => setOpen(section, false))
+
+    sections.forEach((section) => {
+      const header = section.querySelector('.cs-nav-item')
+      const rows = [...section.querySelectorAll('.cs-nav-row')]
+      const chain = [header, ...rows]
+
+      header.addEventListener('focus', () => {
+        if (section.dataset.suppress === 'true') {
+          section.dataset.suppress = 'false'
+          return
+        }
+        closeAll()
+        setOpen(section, true)
+      })
+
+      section.addEventListener('focusout', (event) => {
+        if (!section.contains(event.relatedTarget)) setOpen(section, false)
+      })
+
+      section.addEventListener('keydown', (event) => {
+        const index = chain.indexOf(document.activeElement)
+        if (event.key === 'ArrowDown') {
+          event.preventDefault()
+          setOpen(section, true)
+          ;(chain[index + 1] ?? chain[chain.length - 1]).focus()
+        } else if (event.key === 'ArrowUp') {
+          event.preventDefault()
+          ;(chain[index - 1] ?? chain[0]).focus()
+        } else if (event.key === 'Escape') {
+          event.preventDefault()
+          setOpen(section, false)
+          section.dataset.suppress = 'true'
+          header.focus()
+        }
+      })
+    })
+  }
+</script>
