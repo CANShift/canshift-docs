@@ -15,7 +15,7 @@
     "lint:pre-commit": "lint-staged"
   },
   "dependencies": {
-    "@astrojs/react": "^5.0.7",
+    "@astrojs/react": "^6.0.2",
     "@astrojs/starlight": "^0.41.4",
     "@sentry/astro": "^10.69.0",
     "@vercel/analytics": "^2.0.1",
