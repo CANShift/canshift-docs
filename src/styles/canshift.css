@@ -15,6 +15,15 @@
   --cs-code-bg: #0d0d0d;
   --cs-code-ink: #e8e6e3;
   --cs-code-dim: #6f6b68;
+  --cs-code-file: #8f8b88;
+  --cs-code-rule: rgba(255, 255, 255, 0.12);
+  --cs-code-btn-border: rgba(255, 255, 255, 0.15);
+
+  --cs-on-accent: #ffffff;
+  --cs-accent-pressed: #c9250c;
+
+  --cs-overlay: rgba(0, 0, 0, 0.35);
+  --cs-backdrop: rgba(10, 10, 10, 0.55);
 
   --sl-font: 'Archivo', system-ui, sans-serif;
   --sl-font-mono: 'JetBrains Mono', ui-monospace, monospace;
@@ -185,7 +194,7 @@ starlight-theme-select {
 .sidebar-content a[aria-current='page'],
 .sidebar-content a[aria-current='page']:hover {
   background: var(--cs-accent);
-  color: #fff;
+  color: var(--cs-on-accent);
   font-weight: 600;
 }
 
@@ -268,19 +277,19 @@ starlight-theme-select {
 }
 .expressive-code .frame .header {
   border: 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  border-bottom: 1px solid var(--cs-code-rule);
   background: var(--cs-code-bg);
   padding: 0.5625rem 0.875rem;
 }
 .expressive-code .frame .title {
   font-family: var(--sl-font-mono);
   font-size: 0.71875rem;
-  color: #8f8b88;
+  color: var(--cs-code-file);
   border: 0;
   background: transparent;
 }
 .expressive-code .copy button {
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  border: 1px solid var(--cs-code-btn-border);
   background: transparent;
 }
 
@@ -411,12 +420,12 @@ starlight-toc a[aria-current='true'] {
 
 dialog {
   border: 2px solid var(--cs-rule);
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 24px 60px var(--cs-overlay);
   background: var(--cs-bg);
   max-width: 45rem;
 }
 dialog::backdrop {
-  background: rgba(10, 10, 10, 0.55);
+  background: var(--cs-backdrop);
 }
 .dialog-frame {
   padding: 0;
@@ -443,7 +452,7 @@ dialog::backdrop {
 }
 #starlight__search mark {
   background: var(--cs-accent);
-  color: #fff;
+  color: var(--cs-on-accent);
   padding: 0 3px;
 }
 #starlight__search .pagefind-ui__result-nested {
@@ -478,10 +487,10 @@ dialog::backdrop {
 .sl-link-button.primary {
   background: var(--cs-accent);
   border-color: var(--cs-accent);
-  color: #fff;
+  color: var(--cs-on-accent);
 }
 .sl-link-button.primary:hover {
-  background: #c9250c;
+  background: var(--cs-accent-pressed);
 }
 .sl-link-button.minimal {
   border-color: var(--cs-line);
