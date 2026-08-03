@@ -24,6 +24,7 @@ const groups = navModel.groups.map((group) => {
       current: isCurrent(child.slug),
     }))
     return {
+      key: item.slug,
       label: item.label,
       href: item.exists ? href(item.slug) : null,
       current: isCurrent(item.slug),
@@ -43,8 +44,26 @@ const groups = navModel.groups.map((group) => {
 
 <div class="cs-sidebar">
   <div class="cs-aud-tabs" role="tablist" aria-label="Audience">
-    <button class="cs-aud-tab" role="tab" data-audience="driver" aria-selected="false">DRIVER</button>
-    <button class="cs-aud-tab" role="tab" data-audience="tuner" aria-selected="false">TUNER</button>
+    <button
+      class="cs-aud-tab"
+      role="tab"
+      data-audience="driver"
+      aria-selected="false"
+      aria-disabled="true"
+      disabled
+    >
+      DRIVER
+    </button>
+    <button
+      class="cs-aud-tab"
+      role="tab"
+      data-audience="tuner"
+      aria-selected="false"
+      aria-disabled="true"
+      disabled
+    >
+      TUNER
+    </button>
     <button
       class="cs-aud-tab is-active"
       role="tab"
@@ -79,6 +98,7 @@ const groups = navModel.groups.map((group) => {
             {group.items.map((item) => (
               <li
                 class="cs-page"
+                data-key={item.key}
                 data-has-subs={item.children.length > 0 ? 'true' : undefined}
                 data-current={item.childCurrent ? 'true' : undefined}
               >
@@ -143,7 +163,12 @@ const groups = navModel.groups.map((group) => {
   const sidebar = document.querySelector('.cs-sidebar')
   if (sidebar) {
     const STORE = 'cs-sidebar-state'
-    const state = JSON.parse(localStorage.getItem(STORE) || '{}')
+    let state = {}
+    try {
+      state = JSON.parse(localStorage.getItem(STORE) || '{}') || {}
+    } catch {
+      state = {}
+    }
     state.groups = state.groups || {}
     state.pages = state.pages || {}
     const save = () => localStorage.setItem(STORE, JSON.stringify(state))
@@ -159,8 +184,7 @@ const groups = navModel.groups.map((group) => {
     const setPage = (page, expanded) => {
       page.dataset.collapsed = expanded ? 'false' : 'true'
       page.querySelector('.cs-page-toggle')?.setAttribute('aria-expanded', String(expanded))
-      const key = page.querySelector('.cs-page-label')?.textContent
-      if (key) state.pages[key] = expanded
+      if (page.dataset.key) state.pages[page.dataset.key] = expanded
     }
 
     groups.forEach((group) => {
@@ -173,8 +197,7 @@ const groups = navModel.groups.map((group) => {
     })
 
     subToggles.forEach((page) => {
-      const key = page.querySelector('.cs-page-label')?.textContent
-      const stored = key ? state.pages[key] : undefined
+      const stored = page.dataset.key ? state.pages[page.dataset.key] : undefined
       const expanded = page.dataset.current === 'true' || stored === true
       setPage(page, expanded)
       page.querySelector('.cs-page-toggle')?.addEventListener('click', () => {

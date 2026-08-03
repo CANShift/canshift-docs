@@ -343,13 +343,18 @@ starlight-theme-select {
 .cs-aud-tab:last-child {
   border-right: 0;
 }
-.cs-aud-tab:hover {
+.cs-aud-tab:not(:disabled):hover {
   background: var(--cs-panel);
   color: var(--cs-ink);
 }
 .cs-aud-tab.is-active {
   background: var(--cs-ink);
   color: var(--cs-bg);
+}
+.cs-aud-tab:disabled {
+  color: var(--cs-faint);
+  opacity: 0.55;
+  cursor: default;
 }
 
 .cs-count-row {
