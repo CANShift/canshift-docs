@@ -7,7 +7,7 @@ sidebar:
 
 import { Aside, Steps } from "@astrojs/starlight/components";
 
-CANShift releases are driven by `tburkhalterr/CANShift` GitHub Releases. The
+CANShift releases are driven by `CANShift/CANShift` GitHub Releases. The
 docs site pulls them at build time and renders the public changelog, so
 release descriptions need to be substantive.
 

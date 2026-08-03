@@ -14,7 +14,7 @@ sidebar:
 ## Clone
 
 ```bash
-git clone https://github.com/tburkhalterr/CANShift
+git clone https://github.com/CANShift
 cd CANShift
 ```
 

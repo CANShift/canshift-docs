@@ -55,7 +55,7 @@ export default defineConfig({
         {
           icon: 'github',
           label: 'GitHub',
-          href: 'https://github.com/tburkhalterr/CANShift',
+          href: 'https://github.com/CANShift',
         },
       ],
       sidebar: [
@@ -117,7 +117,7 @@ export default defineConfig({
             },
             {
               label: 'GitHub monorepo',
-              link: 'https://github.com/tburkhalterr/CANShift',
+              link: 'https://github.com/CANShift',
               attrs: { target: '_blank', rel: 'noopener' },
               badge: { text: '↗', variant: 'note' },
             },

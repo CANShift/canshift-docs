@@ -50,5 +50,5 @@ release renders as a blank entry.
 
 ## Links
 
-- [GitHub monorepo](https://github.com/tburkhalterr/CANShift)
+- [GitHub monorepo](https://github.com/CANShift)
 - [Tuner — includes flasher at `/firmware`](https://canshift.tmbk.ch)
