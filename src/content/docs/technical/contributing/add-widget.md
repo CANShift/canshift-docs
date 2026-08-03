@@ -5,13 +5,13 @@ sidebar:
   order: 6
 ---
 
-> 🚨 **Pre-#1351.** "studio editor surface" below means [`canshift-tuner`](../canshift-tuner/) now — the file paths under `canshift-studio-web/` should be read as the matching files in `canshift-tuner/src/components/editor/`. The schema + firmware steps are unchanged. See [`#1351`](https://github.com/tburkhalterr/CANShift/issues/1351).
+> 🚨 **Pre-#1351.** "studio editor surface" below means [`canshift-tuner`](../canshift-tuner/) now — the file paths under `canshift-studio-web/` should be read as the matching files in `canshift-tuner/src/components/editor/`. The schema + firmware steps are unchanged. See [`#1351`](https://github.com/CANShift/issues/1351).
 
 How to introduce a brand-new widget type (e.g. `tacho_arc`, `lap_delta`,
 `bar_graph_dual`) across the three packages it has to land in: schema,
 firmware renderer, and studio editor surface.
 
-Follow-up of [#1020](https://github.com/tburkhalterr/CANShift/issues/1020).
+Follow-up of [#1020](https://github.com/CANShift/issues/1020).
 Defer to the existing 8 implementations as primary reference — this doc only
 spells out the contract between packages and the touch-points each new
 widget must hit.
@@ -68,9 +68,9 @@ discriminant and every widget-specific field. Reuse the shared helpers
 already in the file:
 
 - `WidgetLabelPositionSchema` for `labelPosition` (top/bottom × left/center/right)
-- `SensorIconNameSchema` for `iconName` (drives the two-zone palette, [#954](https://github.com/tburkhalterr/CANShift/issues/954))
+- `SensorIconNameSchema` for `iconName` (drives the two-zone palette, [#954](https://github.com/CANShift/issues/954))
 - `DECIMAL_PLACES.MIN`/`.MAX` for `decimalPlaces`
-- `ColorRampSchema` if the widget needs a per-signal gradient ([#430](https://github.com/tburkhalterr/CANShift/issues/430))
+- `ColorRampSchema` if the widget needs a per-signal gradient ([#430](https://github.com/CANShift/issues/430))
 
 Keep field names in `camelCase` — the wire-format JSON snake_case
 conversion lives at the boundary, not in the schema.
@@ -170,7 +170,7 @@ The non-negotiable pieces:
   `bar_widget.cpp` for the convention.
 - **Function length cap ~40 lines.** If `create()` grows past that, split
   into phase helpers like `bar_widget.cpp` did in
-  [#1125](https://github.com/tburkhalterr/CANShift/issues/1125).
+  [#1125](https://github.com/CANShift/issues/1125).
 - **`update()` must be cheap.** Guard against redundant LVGL calls by
   caching the last value / last fill colour on the Tag — every widget
   re-renders once per frame and every redundant `lv_obj_set_style_*` is
@@ -303,7 +303,7 @@ exists specifically to satisfy this rule for widgets. If you find
 yourself reaching for `new` to allocate per-widget state, the answer is
 "add a field to the Tag struct" or "extend the pool". The previous
 per-type pool approach traded ~8 KB of BSS for the convenience and was
-rolled back in [#1031](https://github.com/tburkhalterr/CANShift/issues/1031).
+rolled back in [#1031](https://github.com/CANShift/issues/1031).
 
 ### Discriminated union exhaustiveness
 

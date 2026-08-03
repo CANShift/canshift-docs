@@ -8,7 +8,7 @@ sidebar:
 How to add CANShift support for a new ECU's CAN protocol — from finding
 the documentation through to shipping the catalog entry.
 
-Follow-up of [#1020](https://github.com/tburkhalterr/CANShift/issues/1020).
+Follow-up of [#1020](https://github.com/CANShift/issues/1020).
 The companion document [`docs/ecu-integration.md`](ecu-integration.md) is
 the deep field-by-field schema reference; this doc is the
 phased-walkthrough that points at it.
@@ -33,8 +33,8 @@ There are two integration paths depending on how the ECU talks:
 2. **Request/response (OBD-II Mode 01)** — the ECU only answers when
    polled. CANShift sends a query frame on `0x7DF` and decodes the
    response from `0x7E8`. Added in
-   [#1135](https://github.com/tburkhalterr/CANShift/issues/1135) /
-   [#841](https://github.com/tburkhalterr/CANShift/issues/841). Mode 01
+   [#1135](https://github.com/CANShift/issues/1135) /
+   [#841](https://github.com/CANShift/issues/841). Mode 01
    only in v1; multi-ECU + ISO-TP deferred to OBD-II v2.
 
 If your ECU is already a built-in preset
@@ -172,7 +172,7 @@ The validator
 runs the same `SignalConfigSchema.safeParse` the studio + mobile IPC
 boundaries use. Catches: malformed `canFrameId` hex, `byteLength`
 outside `{1,2,4}`, threshold ordering violations
-([#1010](https://github.com/tburkhalterr/CANShift/issues/1010)),
+([#1010](https://github.com/CANShift/issues/1010)),
 `min >= max`, bad `bitMask` hex, unsupported `canSpeedKbps`.
 
 For the RealDash import path, `parseRealDashXML` runs every emitted
@@ -274,7 +274,7 @@ won't hold:
   mistake.
 
 These are tracked under
-[#841](https://github.com/tburkhalterr/CANShift/issues/841) (umbrella)
+[#841](https://github.com/CANShift/issues/841) (umbrella)
 and will land in the OBD-II v2 phase.
 
 ---
@@ -296,7 +296,7 @@ Run through this before submitting a preset PR:
 - [ ] If `warningLevel`/`dangerLevel` are set, they obey the monotonic
       ramp invariant (high-side: `warningLevel <= dangerLevel`;
       low-side: `dangerLevel <= warningLevel`) —
-      [#1010](https://github.com/tburkhalterr/CANShift/issues/1010)
+      [#1010](https://github.com/CANShift/issues/1010)
 - [ ] For OBD-II: the polling block has `mode: 1`, a PID from the
       standard catalog, and `intervalMs >= 100`
 - [ ] Outbound frame IDs in the `out` block (map switch, cruise) match

@@ -1,6 +1,6 @@
 ---
 /**
- * Renders the GitHub Releases for tburkhalterr/CANShift at build time.
+ * Renders the GitHub Releases for CANShift/CANShift at build time.
  * Falls back gracefully on rate-limit / network errors so local dev never breaks.
  */
 type Release = {
@@ -13,7 +13,7 @@ type Release = {
   draft: boolean;
 };
 
-const REPO = "tburkhalterr/CANShift";
+const REPO = "CANShift/canshift-firmware";
 const API_URL = `https://api.github.com/repos/${REPO}/releases?per_page=30`;
 
 let releases: Release[] = [];

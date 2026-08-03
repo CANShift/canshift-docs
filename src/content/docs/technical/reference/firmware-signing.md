@@ -12,7 +12,7 @@ env var, so the flasher can verify the detached `.sig` sidecar before
 calling `writeFlash`, defending against a hosting-origin compromise that
 swaps both the binary and its SHA-256 sidecar from the same source.
 Flasher-side verification is not wired up yet. See issue
-[#1259](https://github.com/tburkhalterr/CANShift/issues/1259).
+[#1259](https://github.com/CANShift/issues/1259).
 
 ## Released assets
 
@@ -69,6 +69,6 @@ A multi-key variant (flasher embeds a key set, verifies against any one of N) is
 
 ## References
 
-- Issue [#1259](https://github.com/tburkhalterr/CANShift/issues/1259) — this feature.
+- Issue [#1259](https://github.com/CANShift/issues/1259) — this feature.
 - `.github/workflows/release.yml` — CI step.
 - `scripts/sign_release_artifacts.py` — signing helper.
