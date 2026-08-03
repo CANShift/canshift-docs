@@ -191,8 +191,7 @@
           "label": "Hardware & BOM",
           "slug": "technical/reference/hardware-bom",
           "exists": true,
-          "children": [],
-          "placeholder": true
+          "children": []
         },
         {
           "num": "3.2",

@@ -2147,3 +2147,138 @@ a.cs-pager-cell:active,
   font-size: 0.84375rem;
   color: var(--cs-muted);
 }
+
+.cs-bom [data-rg] {
+  display: none;
+}
+.cs-bom[data-region='us'] [data-rg='us'],
+.cs-bom[data-region='eu'] [data-rg='eu'],
+.cs-bom[data-region='uk'] [data-rg='uk'],
+.cs-bom[data-region='ch'] [data-rg='ch'] {
+  display: inline;
+}
+.cs-bom-badges {
+  margin-bottom: 2.5rem;
+  padding-bottom: 1.875rem;
+  border-bottom: 2px solid var(--cs-rule);
+}
+.cs-bom-ship {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.875rem 1.25rem;
+  margin-bottom: 1.75rem;
+}
+.cs-bom-regions {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 2px;
+}
+.cs-bom-region {
+  font: inherit;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  padding: 0.5625rem 1rem;
+  border: 1px solid var(--cs-line);
+  background: transparent;
+  color: var(--cs-ink);
+  cursor: pointer;
+}
+.cs-bom-region:hover {
+  background: var(--cs-panel);
+}
+.cs-bom-region[aria-pressed='true'] {
+  background: var(--cs-accent);
+  border-color: var(--cs-accent);
+  color: var(--cs-on-accent);
+}
+.cs-bom-note {
+  font-family: var(--sl-font-mono);
+  font-size: 0.75rem;
+  color: var(--cs-muted);
+}
+.cs-bom-stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px;
+  margin-bottom: 2.5rem;
+  background: var(--cs-line);
+  border: 1px solid var(--cs-line);
+}
+@media (min-width: 75rem) {
+  .cs-bom-stats {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+.cs-bom-stat {
+  background: var(--cs-bg);
+  padding: 1.25rem 1.125rem;
+}
+.cs-bom-stat-k {
+  font-family: var(--sl-font-mono);
+  font-size: 0.65625rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--cs-faint);
+  margin-bottom: 0.4375rem;
+}
+.cs-bom-stat-v {
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+.cs-bom-stat-accent {
+  color: var(--cs-accent);
+}
+.cs-bom-stat-note {
+  font-size: 0.78125rem;
+  color: var(--cs-muted);
+}
+.cs-bom .cs-bom-table td:first-child {
+  color: var(--cs-ink);
+  font-family: var(--sl-font);
+  white-space: normal;
+}
+.cs-bom-part {
+  display: block;
+  font-weight: 700;
+  color: var(--cs-ink);
+}
+.cs-bom-spec {
+  display: block;
+  font-size: 0.8125rem;
+  color: var(--cs-muted);
+}
+.cs-bom-shop {
+  font-family: var(--sl-font-mono);
+  font-size: 0.8125rem;
+}
+.cs-bom-table th.cs-bom-price-col,
+.cs-bom-table td.cs-bom-price-col {
+  text-align: right;
+}
+.cs-bom-price {
+  font-family: var(--sl-font-mono);
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.cs-bom .cs-bom-total-row td {
+  border-bottom: 0;
+  padding-top: 0.9375rem;
+  font-family: var(--sl-font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--cs-faint);
+}
+.cs-bom .cs-bom-total-row .cs-bom-price {
+  font-size: 1.0625rem;
+  font-weight: 800;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--cs-ink);
+}
+.cs-bom .cs-bom-total-accent .cs-bom-price {
+  color: var(--cs-accent);
+}

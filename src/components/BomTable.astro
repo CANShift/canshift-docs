@@ -1,0 +1,215 @@
+---
+import { REGIONS, CORE, EXTRAS, supplierFor, sumPrices, formatPrice } from '../data/bom'
+
+const coreTotals = Object.fromEntries(REGIONS.map((region) => [region.id, sumPrices(CORE, region.id)]))
+const allTotals = Object.fromEntries(
+  REGIONS.map((region) => [region.id, sumPrices([...CORE, ...EXTRAS], region.id)])
+)
+const defaultRegion = REGIONS[0].id
+---
+
+<div class="cs-bom" data-region={defaultRegion}>
+  <div class="cs-badges cs-bom-badges">
+    <span class="cs-badge cs-badge-accent">
+      {REGIONS.map((region) => <span data-rg={region.id}>{region.badge}</span>)}
+    </span>
+    <span class="cs-badge">PRICES INDICATIVE</span>
+    <span class="cs-badge">HW REV C</span>
+  </div>
+
+  <div class="cs-bom-ship">
+    <span class="cs-field-label">Ship to</span>
+    <div class="cs-bom-regions" role="group" aria-label="Ship-to region">
+      {
+        REGIONS.map((region) => (
+          <button
+            type="button"
+            class="cs-bom-region"
+            data-region-btn={region.id}
+            aria-pressed={region.id === defaultRegion ? 'true' : 'false'}
+          >
+            {region.button}
+          </button>
+        ))
+      }
+    </div>
+    <span class="cs-bom-note">
+      {REGIONS.map((region) => <span data-rg={region.id}>{region.note}</span>)}
+    </span>
+  </div>
+
+  <div class="cs-bom-stats">
+    <div class="cs-bom-stat">
+      <div class="cs-bom-stat-k">Bench kit</div>
+      <div class="cs-bom-stat-v">
+        {REGIONS.map((region) => <span data-rg={region.id}>{formatPrice(coreTotals[region.id], region)}</span>)}
+      </div>
+      <div class="cs-bom-stat-note">panel, transceiver and wire</div>
+    </div>
+    <div class="cs-bom-stat">
+      <div class="cs-bom-stat-k">In-car build</div>
+      <div class="cs-bom-stat-v cs-bom-stat-accent">
+        {REGIONS.map((region) => <span data-rg={region.id}>{formatPrice(allTotals[region.id], region)}</span>)}
+      </div>
+      <div class="cs-bom-stat-note">everything below, pod included</div>
+    </div>
+    <div class="cs-bom-stat">
+      <div class="cs-bom-stat-k">Build time</div>
+      <div class="cs-bom-stat-v">~3 h</div>
+      <div class="cs-bom-stat-note">soldering iron, crimper</div>
+    </div>
+    <div class="cs-bom-stat">
+      <div class="cs-bom-stat-k">Shipping</div>
+      <div class="cs-bom-stat-v">Worldwide</div>
+      <div class="cs-bom-stat-note">2–20 d · panel ships from CN</div>
+    </div>
+  </div>
+
+  <h2 id="core-parts">Core parts</h2>
+  <p>
+    The seven items below are the whole dash. Prices are indicative — what a build like this tends to
+    cost — and the links point at the distributors, not affiliates.
+  </p>
+  <table class="cs-bom-table">
+    <thead>
+      <tr>
+        <th>Part</th>
+        <th>Supplier</th>
+        <th class="cs-bom-price-col">
+          {REGIONS.map((region) => <span data-rg={region.id}>{region.badge}</span>)}
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      {
+        CORE.map((part) => (
+          <tr>
+            <td>
+              <span class="cs-bom-part">{part.part}</span>
+              <span class="cs-bom-spec">{part.spec}</span>
+            </td>
+            <td>
+              {REGIONS.map((region) => {
+                const supplier = supplierFor(part, region)
+                return (
+                  <a data-rg={region.id} class="cs-bom-shop" href={supplier.url} target="_blank" rel="noopener">
+                    {supplier.shop}
+                  </a>
+                )
+              })}
+            </td>
+            <td class="cs-bom-price-col">
+              {REGIONS.map((region) => (
+                <span data-rg={region.id} class="cs-bom-price">
+                  {formatPrice(part.prices[region.id], region)}
+                </span>
+              ))}
+            </td>
+          </tr>
+        ))
+      }
+      <tr class="cs-bom-total-row">
+        <td>Subtotal</td>
+        <td />
+        <td class="cs-bom-price-col">
+          {REGIONS.map((region) => (
+            <span data-rg={region.id} class="cs-bom-price">
+              {formatPrice(coreTotals[region.id], region)}
+            </span>
+          ))}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2 id="for-a-car-install">For a car install</h2>
+  <table class="cs-bom-table">
+    <thead>
+      <tr>
+        <th>Part</th>
+        <th>Supplier</th>
+        <th class="cs-bom-price-col">
+          {REGIONS.map((region) => <span data-rg={region.id}>{region.badge}</span>)}
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      {
+        EXTRAS.map((part) => (
+          <tr>
+            <td>
+              <span class="cs-bom-part">{part.part}</span>
+              <span class="cs-bom-spec">{part.spec}</span>
+            </td>
+            <td>
+              {REGIONS.map((region) => {
+                const supplier = supplierFor(part, region)
+                return (
+                  <a data-rg={region.id} class="cs-bom-shop" href={supplier.url} target="_blank" rel="noopener">
+                    {supplier.shop}
+                  </a>
+                )
+              })}
+            </td>
+            <td class="cs-bom-price-col">
+              {REGIONS.map((region) => (
+                <span data-rg={region.id} class="cs-bom-price">
+                  {formatPrice(part.prices[region.id], region)}
+                </span>
+              ))}
+            </td>
+          </tr>
+        ))
+      }
+      <tr class="cs-bom-total-row cs-bom-total-accent">
+        <td>Total with core</td>
+        <td />
+        <td class="cs-bom-price-col">
+          {REGIONS.map((region) => (
+            <span data-rg={region.id} class="cs-bom-price">
+              {formatPrice(allTotals[region.id], region)}
+            </span>
+          ))}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<script>
+  import { REGIONS } from '../data/bom'
+
+  const bom = document.querySelector<HTMLElement>('.cs-bom')
+
+  if (bom) {
+    const store = 'cs-bom-region'
+    const ids = REGIONS.map((region) => region.id)
+    const buttons = [...bom.querySelectorAll<HTMLButtonElement>('[data-region-btn]')]
+
+    const apply = (id: string): void => {
+      if (!ids.includes(id)) return
+      bom.dataset.region = id
+      buttons.forEach((button) =>
+        button.setAttribute('aria-pressed', button.dataset.regionBtn === id ? 'true' : 'false')
+      )
+    }
+
+    let saved = ''
+    try {
+      saved = localStorage.getItem(store) ?? ''
+    } catch {
+      saved = ''
+    }
+    if (saved) apply(saved)
+
+    buttons.forEach((button) => {
+      button.addEventListener('click', () => {
+        const id = button.dataset.regionBtn!
+        apply(id)
+        try {
+          localStorage.setItem(store, id)
+        } catch {}
+      })
+    })
+  }
+</script>
