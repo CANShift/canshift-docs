@@ -875,29 +875,46 @@ h1#_top {
 }
 
 .sl-markdown-content table {
+  display: block;
   width: 100%;
+  overflow-x: auto;
   border-collapse: collapse;
   font-size: 0.90625rem;
 }
 .sl-markdown-content th {
   text-align: left;
+  font-family: var(--sl-font-mono);
   font-size: 0.6875rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  font-weight: 800;
+  font-weight: 700;
+  color: var(--cs-muted);
+  background: var(--cs-panel);
   padding: 0.6875rem 0.75rem;
   border: 0;
   border-bottom: 2px solid var(--cs-rule);
+  white-space: nowrap;
 }
 .sl-markdown-content td {
   padding: 0.6875rem 0.75rem;
   border: 0;
   border-bottom: 1px solid var(--cs-line);
   color: var(--cs-muted);
+  vertical-align: top;
+}
+.sl-markdown-content tbody tr:hover {
+  background: var(--cs-panel);
 }
 .sl-markdown-content td:first-child {
-  color: var(--cs-ink);
+  color: var(--cs-accent);
   font-family: var(--sl-font-mono);
+  font-weight: 700;
+  white-space: nowrap;
+}
+.sl-markdown-content :is(th, td)[style*='right'] {
+  font-family: var(--sl-font-mono);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
 }
 .sl-markdown-content :is(th, td):first-child {
   padding-inline-start: 0;
