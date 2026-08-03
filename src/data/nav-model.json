@@ -50,19 +50,22 @@
               "num": "1.4.1",
               "label": "ECU profiles",
               "slug": "user-guide/configure/ecu-profiles",
-              "exists": false
+              "exists": true,
+              "placeholder": true
             },
             {
               "num": "1.4.2",
               "label": "Widgets & pages",
               "slug": "user-guide/configure/widgets",
-              "exists": false
+              "exists": true,
+              "placeholder": true
             },
             {
               "num": "1.4.3",
               "label": "Live data",
               "slug": "user-guide/configure/live-data",
-              "exists": false
+              "exists": true,
+              "placeholder": true
             }
           ]
         },
@@ -139,7 +142,7 @@
           "num": "2.5",
           "label": "Transports",
           "slug": "technical/architecture/transports",
-          "exists": false,
+          "exists": true,
           "children": [
             {
               "num": "2.5.1",
@@ -153,7 +156,8 @@
               "slug": "technical/architecture/ble-transport",
               "exists": true
             }
-          ]
+          ],
+          "placeholder": true
         },
         {
           "num": "2.6",
@@ -186,8 +190,9 @@
           "num": "3.1",
           "label": "Hardware & BOM",
           "slug": "technical/reference/hardware-bom",
-          "exists": false,
-          "children": []
+          "exists": true,
+          "children": [],
+          "placeholder": true
         },
         {
           "num": "3.2",
@@ -199,19 +204,22 @@
               "num": "3.2.1",
               "label": "Display bus",
               "slug": "technical/reference/pinout-display",
-              "exists": false
+              "exists": true,
+              "placeholder": true
             },
             {
               "num": "3.2.2",
               "label": "CAN header",
               "slug": "technical/reference/pinout-can",
-              "exists": false
+              "exists": true,
+              "placeholder": true
             },
             {
               "num": "3.2.3",
               "label": "Power rails",
               "slug": "technical/reference/pinout-power",
-              "exists": false
+              "exists": true,
+              "placeholder": true
             }
           ]
         },
@@ -288,29 +296,33 @@
           "num": "4.1",
           "label": "Tuner tour",
           "slug": "tuner-app/tuner-tour",
-          "exists": false,
-          "children": []
+          "exists": true,
+          "children": [],
+          "placeholder": true
         },
         {
           "num": "4.2",
           "label": "Pairing over BLE",
           "slug": "tuner-app/pairing",
-          "exists": false,
-          "children": []
+          "exists": true,
+          "children": [],
+          "placeholder": true
         },
         {
           "num": "4.3",
           "label": "Layout editor",
           "slug": "tuner-app/layout-editor",
-          "exists": false,
-          "children": []
+          "exists": true,
+          "children": [],
+          "placeholder": true
         },
         {
           "num": "4.4",
           "label": "Mobile companion",
           "slug": "tuner-app/mobile",
-          "exists": false,
-          "children": []
+          "exists": true,
+          "children": [],
+          "placeholder": true
         }
       ]
     },

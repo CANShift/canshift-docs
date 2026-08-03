@@ -1,0 +1,12 @@
+---
+import navModel from '../data/nav-model.json'
+import Placeholder from './Placeholder.astro'
+import { isPlaceholder } from '../config/page-state.mjs'
+import '@astrojs/starlight/style/markdown.css'
+
+const placeholder = isPlaceholder(Astro.url.pathname, navModel)
+---
+
+<div class="sl-markdown-content">
+  {placeholder ? <Placeholder /> : <slot />}
+</div>
