@@ -690,6 +690,42 @@ dialog::backdrop {
   background: var(--cs-line);
 }
 
+.social-icons a {
+  color: var(--cs-muted);
+}
+.social-icons a:hover,
+.sidebar-content summary:hover,
+starlight-toc a:hover {
+  color: var(--cs-ink);
+}
+starlight-theme-select:hover,
+starlight-theme-select select:hover {
+  background: var(--cs-panel);
+}
+.sl-markdown-content a:hover {
+  text-decoration-thickness: 2px;
+}
+.sl-link-button.minimal:hover {
+  background: var(--cs-panel);
+  color: var(--cs-ink);
+}
+.expressive-code .copy button:hover {
+  border-color: var(--cs-code-file);
+}
+
+.sidebar-content a:not([aria-current='page']):active,
+site-search button[data-open-modal]:active,
+.pagination-links a:active,
+.card:active,
+.cs-doorways a:active,
+.sl-link-button.minimal:active,
+#starlight__search .pagefind-ui__result:active {
+  background: var(--cs-sunk);
+}
+.sl-link-button.primary:active {
+  background: var(--cs-accent-pressed);
+}
+
 @media (max-width: 50rem) {
   .content-panel {
     padding: 1.75rem 1.25rem;
