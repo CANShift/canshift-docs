@@ -1,33 +1,51 @@
 ---
 title: 'Release process'
-description: 'Tagging a release, writing the changelog, publishing to GitHub.'
+description: 'How firmware releases and the @canshift/core npm package are cut in the per-repo layout.'
 sidebar:
   order: 3
 ---
 
 import { Aside, Steps } from "@astrojs/starlight/components";
 
-CANShift releases are driven by `CANShift/CANShift` GitHub Releases. The
-docs site pulls them at build time and renders the public changelog, so
-release descriptions need to be substantive.
+Firmware releases ship from
+[`CANShift/canshift-firmware`](https://github.com/CANShift/canshift-firmware).
+This docs site pulls those GitHub Releases at build time and renders the
+public [changelog](/changelog/), so release descriptions need to be
+substantive. The other repositories version and ship independently — there is
+no global lockstep.
+
+## What ships from where
+
+- **Firmware** — GitHub Releases on `canshift-firmware`, with signed binaries
+  attached. This is the release stream the changelog renders.
+- **`@canshift/core`** — published to npm. Tagging `vX.Y.Z` on
+  `canshift-core` runs the publish workflow, which ships to npm with
+  provenance. The npm version is independent of the schema version.
+- **Tuner** — deployed continuously by Vercel (preview per PR, production on
+  `main`). No release tag; whatever is on `main` is live.
+- **Mobile** — store builds via EAS when it comes out of deferral. Not part of
+  the firmware release stream.
 
 ## Versioning
 
-- **Firmware**: `canshift-firmware/package.json::version` — the build script
-  bakes it into `APP_VERSION_STR`. Semver.
-- **Core schema**: `canshift-core/src/index.ts::CURRENT_SCHEMA_VERSION` —
-  bumped only when `dashboard.json` / `signals.json` shape changes in a way
-  the firmware needs to reject old configs for. Independent of firmware
-  semver.
-- **Tuner / docs / mobile**: each ships its own `package.json::version`.
-  No global lockstep.
+- **Firmware**: `canshift-firmware/package.json::version` — the build bakes it
+  into `APP_VERSION_STR`. Semver; still pre-1.0.
+- **Core schema**: `CURRENT_SCHEMA_VERSION` in `canshift-core` — bumped only
+  when the config shape changes in a way the firmware must reject old configs
+  for, always paired with a migration in `src/migrations/registry.ts` in the
+  same PR. Independent of both firmware semver and the `@canshift/core` npm
+  version. The firmware pins the schema version it expects in
+  `core-schema-version.txt` — update that pin on every bump.
+- **Core npm package**: `canshift-core/package.json::version` — bumped when you
+  want consumers to be able to pull new contracts. Independent of the schema
+  version.
 
-The firmware semver bumps the most often. Schema version is the gate that
+The firmware semver bumps the most often. The schema version is the gate that
 forces a re-burn from the tuner.
 
 ## Release-notes structure
 
-Every release description follows this template (also documented in
+Every firmware release description follows this template (also documented in
 [Changelog](/changelog/)):
 
 ```markdown
@@ -43,7 +61,7 @@ Every release description follows this template (also documented in
 
 ### 🔬 Firmware / dev
 
-- (build flags, schema, Rust ports, refactors)
+- (build flags, schema, Rust modules, refactors)
 
 ### ⚠️ Breaking
 
@@ -51,7 +69,7 @@ Every release description follows this template (also documented in
 
 ### PRs
 
-- #XXXX — ...
+- #XX — ...
 ```
 
 <Aside type="caution" title="Don't ship empty">
@@ -60,50 +78,62 @@ a useless changelog entry. Group by audience; lead with what the driver
 notices.
 </Aside>
 
-## Steps
+## Cutting a firmware release
+
+The release is driven by merging a version bump — the workflow does the
+tagging and building. You are not tagging by hand.
 
 <Steps>
 
-1. **Bump firmware version** in `canshift-firmware/package.json`. Commit on
-   `main` via PR with title `chore(firmware): bump to <version>`.
+1. **Bump the firmware version** in `canshift-firmware/package.json`. Open a PR
+   titled `chore: bump to <version>` and merge it to `main`.
 
-2. **Bump schema version** if any breaking change to `dashboard.json` /
-   `signals.json` landed since the last release. Otherwise leave alone.
+2. **Bump the schema version** first, in a separate `canshift-core` PR, if any
+   breaking change to the config shape landed since the last release — pair it
+   with a migration and update `core-schema-version.txt` in the firmware.
+   Otherwise leave it alone.
 
-3. **Cut the tag** locally:
+3. **Let the release workflow run.** On the version-bump merge, the workflow
+   tags the commit, builds the signed firmware artifacts (merged / firmware /
+   SPIFFS), and drafts a GitHub Release for the tag.
 
-   ```bash
-   git tag firmware/v1.2.3
-   git push origin firmware/v1.2.3
-   ```
+4. **Fill in the release notes.** Edit the drafted release, paste the
+   structured template above, and write real content from the PR stream since
+   the previous release. Then publish it.
 
-4. **Build the artefacts** — the release workflow runs on the tag push and
-   produces signed firmware binaries.
+5. **Confirm the flasher sees it.** The tuner's Firmware view reads the GitHub
+   Releases API on `canshift-firmware` and lists available versions — the new
+   release appears there within about a minute.
 
-5. **Open the GitHub Release** for the tag, paste the structured template
-   above, fill in real content from the PR stream since the previous tag.
-   Use `gh release create` or the web UI.
-
-6. **Attach the firmware binaries** to the release. The flasher (hosted at
-   `canshift-tuner.vercel.app/firmware`) reads the GitHub Releases API to
-   list available firmware versions — your release will show up there
-   within ~1 minute.
-
-7. **Smoke-test** by re-flashing a dash from the tuner using the new release.
+6. **Smoke-test** by re-flashing a dash from the tuner using the new release.
 
 </Steps>
 
 ## Patch vs minor vs major
 
-- **Patch** (1.2.3 → 1.2.4): bug fix, no UX change, no schema change.
+- **Patch** (x.y.z → x.y.z+1): bug fix, no UX change, no schema change.
   Re-flash is optional unless the user hit the bug.
-- **Minor** (1.2.x → 1.3.0): new feature, no breaking change. Re-flash
+- **Minor** (x.y → x.y+1): new feature, no breaking change. Re-flash
   recommended.
-- **Major** (1.x → 2.0): breaking change. Driver MUST re-flash AND re-burn
-  config. Spell out the migration in the `⚠️ Breaking` section.
+- **Major** (breaking): driver MUST re-flash AND re-burn config. Spell out the
+  migration in the `⚠️ Breaking` section.
 
 ## Pre-releases
 
-Tag with a suffix to mark a pre-release (e.g. `firmware/v1.3.0-rc.1`).
-GitHub Releases recognises the suffix and badges it as "pre-release". The
-flasher lists pre-releases behind a toggle.
+Bump to a version with a pre-release suffix (e.g. `1.3.0-rc.1`). GitHub
+Releases recognises the suffix and badges it as "pre-release"; the tuner's
+Firmware view lists pre-releases behind a toggle.
+
+## Publishing `@canshift/core`
+
+Core is released separately from the firmware:
+
+<Steps>
+
+1. Bump `canshift-core/package.json::version` and merge to `main`.
+2. Tag the release commit `vX.Y.Z` and push the tag — the publish workflow
+   ships the package to npm with provenance.
+3. Bump the `@canshift/core` dependency in `canshift-tuner` (and
+   `canshift-mobile` when active) to pick up the new contracts.
+
+</Steps>
