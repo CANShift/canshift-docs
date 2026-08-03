@@ -7,12 +7,45 @@ export interface ResultSection {
 
 interface NavItem {
   slug: string
+  label?: string
+  exists?: boolean
+  placeholder?: boolean
   children?: NavItem[]
 }
 
 interface NavGroup {
   label: string
+  navLabel: string
   items: NavItem[]
+}
+
+export interface Suggestion {
+  group: string
+  title: string
+  slug: string
+}
+
+const isAuthored = (item: NavItem): boolean =>
+  Boolean(item.exists && !item.placeholder && item.label)
+
+const firstAuthored = (group: NavGroup): NavItem | null => {
+  for (const item of group.items) {
+    if (isAuthored(item)) return item
+    for (const child of item.children ?? []) {
+      if (isAuthored(child)) return child
+    }
+  }
+  return null
+}
+
+export const suggestions = (limit = 3): Suggestion[] => {
+  const picks: Suggestion[] = []
+  for (const group of navModel.groups as NavGroup[]) {
+    const page = firstAuthored(group)
+    if (page) picks.push({ group: group.navLabel, title: page.label!, slug: page.slug })
+    if (picks.length >= limit) break
+  }
+  return picks
 }
 
 const ELSEWHERE: ResultSection = { label: 'ELSEWHERE', order: Number.MAX_SAFE_INTEGER }
