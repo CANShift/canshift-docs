@@ -146,11 +146,16 @@ Checks run in the repository you push to — there is no shared pipeline:
 
 | Repository          | Required checks                             |
 | ------------------- | ------------------------------------------- |
-| `canshift-core`     | `lint`, `test`, `build`                     |
+| `canshift-core`     | `lint`, `test`, `build`, `firmware-parity`  |
 | `canshift-firmware` | `lint` (clang-format), native build + tests |
 | `canshift-tuner`    | `lint`, `typecheck`, `test`, `build`        |
 | `canshift-mobile`   | `lint`, `typecheck`, `test`                 |
 | `canshift-docs`     | `lint`, `build`                             |
+
+`firmware-parity` checks out `canshift-firmware` alongside `canshift-core` and
+fails the PR if the schema the firmware pins in `core-schema-version.txt` has
+drifted from what core exports — so a schema change and its firmware pin land
+together, not a release apart.
 
 See [Testing](/technical/contributing/testing/) for the test harnesses and
 [Release process](/technical/contributing/release-process/) for how firmware
