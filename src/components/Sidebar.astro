@@ -34,7 +34,10 @@ const groups = navModel.groups.map((group) => {
   })
   return {
     id: group.id,
+    num: group.num,
     label: group.label,
+    audiences: group.audiences,
+    pageCount: items.reduce((sum, item) => sum + 1 + item.children.length, 0),
     marks: group.icon.repoMarkPaths,
     current: items.some((item) => item.current || item.childCurrent),
     items,
@@ -42,28 +45,10 @@ const groups = navModel.groups.map((group) => {
 })
 ---
 
-<div class="cs-sidebar">
+<div class="cs-sidebar" data-audience={activeAudience}>
   <div class="cs-aud-tabs" role="tablist" aria-label="Audience">
-    <button
-      class="cs-aud-tab"
-      role="tab"
-      data-audience="driver"
-      aria-selected="false"
-      aria-disabled="true"
-      disabled
-    >
-      DRIVER
-    </button>
-    <button
-      class="cs-aud-tab"
-      role="tab"
-      data-audience="tuner"
-      aria-selected="false"
-      aria-disabled="true"
-      disabled
-    >
-      TUNER
-    </button>
+    <button class="cs-aud-tab" role="tab" data-audience="driver" aria-selected="false">DRIVER</button>
+    <button class="cs-aud-tab" role="tab" data-audience="tuner" aria-selected="false">TUNER</button>
     <button
       class="cs-aud-tab is-active"
       role="tab"
@@ -82,7 +67,14 @@ const groups = navModel.groups.map((group) => {
   <ul class="cs-groups">
     {
       groups.map((group) => (
-        <li class="cs-group" data-group={group.id} data-current={group.current ? 'true' : undefined}>
+        <li
+          class="cs-group"
+          data-group={group.id}
+          data-audiences={group.audiences.join(' ')}
+          data-pagecount={group.pageCount}
+          data-current={group.current ? 'true' : undefined}
+          style={`--cs-gnum: '${group.num}'`}
+        >
           <button class="cs-group-toggle" type="button" aria-expanded="true">
             <svg class="cs-repo-mark" viewBox="0 0 116 100" aria-hidden="true">
               <g transform="translate(8,0)" fill="none" stroke-width="15">
@@ -222,5 +214,51 @@ const groups = navModel.groups.map((group) => {
       expandAll.textContent = expand ? 'COLLAPSE ALL' : 'EXPAND ALL'
       save()
     })
+
+    const AUD_KEY = 'cs-audience'
+    const audiences = ['driver', 'tuner', 'dev']
+    const readAudience = () => {
+      try {
+        const stored = localStorage.getItem(AUD_KEY)
+        return audiences.includes(stored) ? stored : null
+      } catch {
+        return null
+      }
+    }
+    const writeAudience = (audience) => {
+      try {
+        localStorage.setItem(AUD_KEY, audience)
+      } catch {}
+    }
+
+    const tabs = [...sidebar.querySelectorAll('.cs-aud-tab')]
+    const countEl = sidebar.querySelector('.cs-count')
+    const groupAudiences = (group) => group.dataset.audiences.split(' ')
+    const countFor = (audience) =>
+      groups
+        .filter((group) => groupAudiences(group).includes(audience))
+        .reduce((total, group) => total + Number(group.dataset.pagecount), 0)
+
+    const setAudience = (audience) => {
+      sidebar.dataset.audience = audience
+      tabs.forEach((tab) => {
+        const on = tab.dataset.audience === audience
+        tab.classList.toggle('is-active', on)
+        tab.setAttribute('aria-selected', String(on))
+      })
+      countEl.textContent = `${countFor(audience)} PAGES · ${audience.toUpperCase()}`
+      writeAudience(audience)
+    }
+
+    tabs.forEach((tab) =>
+      tab.addEventListener('click', () => setAudience(tab.dataset.audience))
+    )
+
+    let audience = readAudience() || 'dev'
+    const currentGroup = sidebar.querySelector('.cs-group[data-current="true"]')
+    if (currentGroup && !groupAudiences(currentGroup).includes(audience)) {
+      audience = groupAudiences(currentGroup)[0]
+    }
+    setAudience(audience)
   }
 </script>

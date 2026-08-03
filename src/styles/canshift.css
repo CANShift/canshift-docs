@@ -343,18 +343,13 @@ starlight-theme-select {
 .cs-aud-tab:last-child {
   border-right: 0;
 }
-.cs-aud-tab:not(:disabled):hover {
+.cs-aud-tab:hover {
   background: var(--cs-panel);
   color: var(--cs-ink);
 }
 .cs-aud-tab.is-active {
   background: var(--cs-ink);
   color: var(--cs-bg);
-}
-.cs-aud-tab:disabled {
-  color: var(--cs-faint);
-  opacity: 0.55;
-  cursor: default;
 }
 
 .cs-count-row {
@@ -386,14 +381,15 @@ starlight-theme-select {
 }
 
 .cs-groups {
-  counter-reset: cs-group;
   list-style: none;
   margin: 0;
   padding: 0;
   flex: 1;
 }
-.cs-group {
-  counter-increment: cs-group;
+.cs-sidebar[data-audience='driver'] .cs-group:not([data-audiences~='driver']),
+.cs-sidebar[data-audience='tuner'] .cs-group:not([data-audiences~='tuner']),
+.cs-sidebar[data-audience='dev'] .cs-group:not([data-audiences~='dev']) {
+  display: none;
 }
 .cs-group-toggle {
   display: flex;
@@ -427,7 +423,7 @@ starlight-theme-select {
   color: var(--cs-faint);
 }
 .cs-group-label::before {
-  content: counter(cs-group) ' — ';
+  content: var(--cs-gnum) ' — ';
 }
 .cs-group-count {
   font-family: var(--sl-font-mono);
@@ -496,7 +492,7 @@ starlight-theme-select {
   font-variant-numeric: tabular-nums;
 }
 .cs-page-num::before {
-  content: counter(cs-group) '.' counter(cs-page);
+  content: var(--cs-gnum) '.' counter(cs-page);
 }
 .cs-page-label {
   flex: 1;
@@ -568,7 +564,7 @@ starlight-theme-select {
   font-variant-numeric: tabular-nums;
 }
 .cs-sub-num::before {
-  content: counter(cs-group) '.' counter(cs-page) '.' counter(cs-sub);
+  content: var(--cs-gnum) '.' counter(cs-page) '.' counter(cs-sub);
 }
 .cs-sub-link[aria-current='page'] {
   background: var(--cs-accent);
