@@ -148,7 +148,7 @@ const endpoint = 'https://tmbk.ch/api/contact/canshift'
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            name: email.split('@')[0],
+            name: 'CANShift Docs',
             email,
             message: composeMessage(),
             company: '',
