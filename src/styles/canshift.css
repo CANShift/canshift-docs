@@ -1421,7 +1421,7 @@ a.cs-pager-cell:active,
 .content-panel:has(.cs-home) {
   padding: 0;
 }
-.content-panel:has(+ .content-panel .cs-home) {
+.content-panel:has(+ .content-panel :is(.cs-home, .cs-404)) {
   display: none;
 }
 .sl-container:has(.cs-home) {
@@ -1825,4 +1825,112 @@ a.cs-pager-cell:active,
   .cs-home .cs-stats {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+}
+
+.cs-404 {
+  max-width: 44rem;
+  padding: clamp(3rem, 7vw, 6rem) clamp(1.5rem, 5vw, 4.5rem);
+}
+.cs-404-kicker {
+  margin-bottom: 1rem;
+  font-family: var(--sl-font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  color: var(--cs-accent);
+}
+.cs-404-title {
+  margin: 0 0 1rem;
+  font-size: 3.25rem;
+  font-weight: 800;
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+}
+.cs-404-dek {
+  margin: 0 0 2.25rem;
+  max-width: 46ch;
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  color: var(--cs-muted);
+}
+.cs-404-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.cs-404 .cs-404-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.125rem;
+  border: 1px solid var(--cs-line);
+  color: var(--cs-ink);
+  text-decoration: none;
+}
+.cs-404 .cs-404-row:hover {
+  background: var(--cs-panel);
+  text-decoration: none;
+}
+.cs-404-row-main {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  flex: 1;
+  min-width: 0;
+}
+.cs-404-row-group {
+  font-family: var(--sl-font-mono);
+  font-size: 0.65625rem;
+  letter-spacing: 0.14em;
+  color: var(--cs-faint);
+}
+.cs-404-row-title {
+  font-size: 0.96875rem;
+  font-weight: 700;
+}
+.cs-404-row-go {
+  flex: none;
+  font-family: var(--sl-font-mono);
+  font-size: 1rem;
+  color: var(--cs-accent);
+}
+.cs-404-search {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  width: 100%;
+  margin-top: 2px;
+  padding: 1rem 1.125rem;
+  border: 1px solid var(--cs-rule);
+  background: transparent;
+  font: inherit;
+  font-size: 0.96875rem;
+  font-weight: 700;
+  color: var(--cs-ink);
+  text-align: start;
+  cursor: pointer;
+}
+.cs-404-search:hover {
+  background: var(--cs-panel);
+}
+.cs-404-search svg {
+  width: 1rem;
+  flex: none;
+  color: var(--cs-accent);
+}
+.cs-404-search-label {
+  flex: 1;
+}
+.cs-404-search kbd {
+  font-family: var(--sl-font-mono);
+  font-size: 0.6875rem;
+  padding: 3px 6px;
+  border: 1px solid var(--cs-line);
+  color: var(--cs-muted);
+}
+.cs-404-home {
+  display: inline-block;
+  margin-top: 1.75rem;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--cs-accent);
 }

@@ -1,0 +1,47 @@
+---
+import { suggestions } from '../lib/nav'
+
+const picks = suggestions()
+---
+
+<div class="cs-404">
+  <div class="cs-404-kicker">404</div>
+  <h1 class="cs-404-title">This page is not on the bus.</h1>
+  <p class="cs-404-dek">
+    The URL may have moved when the docs were reorganised. Pick a doorway below, or search the whole
+    site.
+  </p>
+
+  <div class="cs-404-rows">
+    {
+      picks.map((item) => (
+        <a class="cs-404-row" href={`/${item.slug}/`}>
+          <span class="cs-404-row-main">
+            <span class="cs-404-row-group">{item.group}</span>
+            <span class="cs-404-row-title">{item.title}</span>
+          </span>
+          <span class="cs-404-row-go">→</span>
+        </a>
+      ))
+    }
+  </div>
+
+  <button type="button" class="cs-404-search" data-cs-404-search>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+      <circle cx="11" cy="11" r="7"></circle>
+      <path d="M20 20l-4-4"></path>
+    </svg>
+    <span class="cs-404-search-label">Search the docs</span>
+    <kbd>⌘K</kbd>
+  </button>
+
+  <a class="cs-404-home" href="/">Back to home →</a>
+</div>
+
+<script>
+  const button = document.querySelector('[data-cs-404-search]')
+  button?.addEventListener('click', () => {
+    const trigger = document.querySelector('.cs-search-trigger')
+    if (trigger instanceof HTMLElement) trigger.click()
+  })
+</script>
