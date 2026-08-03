@@ -205,6 +205,76 @@ header.header > .header > * {
 .cs-navbar .cs-nav-item:last-child {
   border-right: 0;
 }
+
+.cs-nav-section {
+  display: flex;
+  position: relative;
+}
+.cs-nav-panel {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 20.625rem;
+  background: var(--cs-bg);
+  border: 1px solid var(--cs-line);
+  border-top: 2px solid var(--cs-accent);
+  z-index: 60;
+}
+.cs-nav-section[data-anchor='right'] .cs-nav-panel {
+  left: auto;
+  right: 0;
+}
+.cs-nav-section:hover > .cs-nav-panel,
+.cs-nav-section[data-open='true'] > .cs-nav-panel {
+  display: block;
+}
+.cs-nav-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  padding: 0.625rem 1.125rem;
+  border-top: 1px solid var(--cs-line);
+  font-size: 0.875rem;
+  color: var(--cs-muted);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.cs-nav-row:first-child {
+  border-top: 0;
+}
+.cs-nav-row:hover,
+.cs-nav-row:focus-visible {
+  background: var(--cs-accent-soft);
+  color: var(--cs-ink);
+}
+.cs-nav-row[aria-current] {
+  color: var(--cs-ink);
+  box-shadow: inset 3px 0 0 var(--cs-accent);
+}
+.cs-nav-row-num {
+  min-width: 2rem;
+  font-family: var(--sl-font-mono);
+  font-size: 0.6875rem;
+  color: var(--cs-faint);
+}
+.cs-nav-row-label {
+  flex: 1;
+}
+.cs-nav-row-more {
+  font-family: var(--sl-font-mono);
+  font-size: 0.625rem;
+  color: var(--cs-accent);
+}
+.cs-nav-row.cs-nav-disabled {
+  color: var(--cs-faint);
+  cursor: default;
+}
+.cs-nav-row.cs-nav-disabled:hover {
+  background: transparent;
+  color: var(--cs-faint);
+}
+
 @media (max-width: 77.5rem) {
   .cs-nav-trailing {
     display: none;
