@@ -659,6 +659,59 @@ h1#_top {
   font-weight: 700;
 }
 
+.cs-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.125rem;
+}
+.cs-placeholder .cs-placeholder-badge {
+  padding: 0.3125rem 0.5625rem;
+  border: 1px solid var(--cs-line);
+  font-family: var(--sl-font-mono);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: var(--cs-muted);
+}
+.cs-placeholder .cs-placeholder-body {
+  max-width: 62ch;
+  margin: 0;
+  font-size: 1.03125rem;
+  line-height: 1.78;
+  color: var(--cs-ink);
+  text-wrap: pretty;
+}
+.cs-placeholder .cs-placeholder-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.125rem;
+}
+.cs-placeholder .cs-placeholder-primary,
+.cs-placeholder .cs-placeholder-ghost {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.8125rem 1.25rem;
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+.cs-placeholder .cs-placeholder-primary {
+  background: var(--cs-accent);
+  color: var(--cs-on-accent);
+}
+.cs-placeholder .cs-placeholder-primary:hover {
+  background: var(--cs-accent-pressed);
+}
+.cs-placeholder .cs-placeholder-ghost {
+  border: 1px solid var(--cs-line);
+  color: var(--cs-muted);
+}
+.cs-placeholder .cs-placeholder-ghost:hover {
+  border-color: var(--cs-ink);
+  color: var(--cs-ink);
+}
+
 .sl-markdown-content {
   font-size: var(--sl-text-body);
 }
