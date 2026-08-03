@@ -192,6 +192,7 @@
           "label": "Hardware & BOM",
           "slug": "technical/reference/hardware-bom",
           "exists": true,
+          "reportRepo": "docs",
           "children": []
         },
         {
