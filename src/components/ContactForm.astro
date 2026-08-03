@@ -1,0 +1,171 @@
+---
+const endpoint = 'https://tmbk.ch/api/contact/canshift'
+---
+
+<form class="cs-contact" novalidate data-endpoint={endpoint}>
+  <fieldset class="cs-seg" data-cs-type>
+    <legend class="cs-field-label">Type</legend>
+    <div class="cs-seg-options">
+      <label class="cs-seg-item">
+        <input type="radio" name="type" value="question" checked />
+        <span>Question</span>
+      </label>
+      <label class="cs-seg-item">
+        <input type="radio" name="type" value="bug" />
+        <span>Bug report</span>
+      </label>
+    </div>
+  </fieldset>
+
+  <label class="cs-field">
+    <span class="cs-field-label">Email <span class="cs-req">· required</span></span>
+    <input class="cs-input" type="email" name="email" autocomplete="email" placeholder="you@example.ch" />
+    <span class="cs-field-error" data-cs-error-for="email" hidden></span>
+  </label>
+
+  <label class="cs-field">
+    <span class="cs-field-label">Message <span class="cs-req">· required</span></span>
+    <textarea class="cs-input" name="message" rows="6" placeholder="What happened, what you expected, and the steps that get there."></textarea>
+    <span class="cs-hint">10 to 2000 characters</span>
+    <span class="cs-field-error" data-cs-error-for="message" hidden></span>
+  </label>
+
+  <div class="cs-details" data-cs-details hidden>
+    <span class="cs-field-label cs-details-label">Details</span>
+    <div class="cs-details-grid">
+      <label class="cs-field">
+        <span class="cs-field-label">Component</span>
+        <select class="cs-input" name="component">
+          <option value="firmware">Firmware — the dash</option>
+          <option value="tuner">Tuner — the browser app</option>
+          <option value="mobile">Mobile — the BLE companion</option>
+        </select>
+      </label>
+      <label class="cs-field">
+        <span class="cs-field-label">Firmware version</span>
+        <input class="cs-input" type="text" name="firmware" placeholder="1.8.2" />
+      </label>
+    </div>
+    <label class="cs-field">
+      <span class="cs-field-label">Reproduction</span>
+      <textarea class="cs-input" name="reproduction" rows="4" placeholder="The steps that reproduce it, every time."></textarea>
+    </label>
+  </div>
+
+  <input type="text" name="company" class="cs-honeypot" tabindex="-1" autocomplete="off" aria-hidden="true" />
+
+  <p class="cs-form-alert cs-form-error" data-cs-form-error hidden></p>
+  <p class="cs-form-alert cs-form-success" data-cs-form-success hidden>
+    Sent. The people who answer are the ones who write the code — expect a reply within a day or two.
+  </p>
+
+  <div class="cs-form-actions">
+    <button type="submit" class="cs-submit">Send it →</button>
+    <span class="cs-form-note">
+      or <a href="https://github.com/CANShift/canshift-firmware/issues/new/choose">open a GitHub issue</a>.
+    </span>
+  </div>
+</form>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('.cs-contact')
+
+  if (form) {
+    const endpoint = form.dataset.endpoint!
+    const details = form.querySelector<HTMLElement>('[data-cs-details]')!
+    const formError = form.querySelector<HTMLElement>('[data-cs-form-error]')!
+    const formSuccess = form.querySelector<HTMLElement>('[data-cs-form-success]')!
+    const submit = form.querySelector<HTMLButtonElement>('.cs-submit')!
+
+    const field = (name: string): HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement | null =>
+      form.querySelector(`[name="${name}"]`)
+
+    const currentType = (): string =>
+      (form.querySelector<HTMLInputElement>('[name="type"]:checked')?.value ?? 'question')
+
+    const syncDetails = () => {
+      details.hidden = currentType() !== 'bug'
+    }
+
+    form.querySelectorAll<HTMLInputElement>('[name="type"]').forEach((radio) => {
+      radio.addEventListener('change', syncDetails)
+    })
+    syncDetails()
+
+    const setError = (name: string, message: string): void => {
+      const target = form.querySelector<HTMLElement>(`[data-cs-error-for="${name}"]`)
+      if (!target) return
+      target.textContent = message
+      target.hidden = !message
+      field(name)?.setAttribute('aria-invalid', message ? 'true' : 'false')
+    }
+
+    const validate = (): boolean => {
+      let ok = true
+      const email = (field('email') as HTMLInputElement).value.trim()
+      const message = (field('message') as HTMLTextAreaElement).value.trim()
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        setError('email', 'Enter an email we can reply to.')
+        ok = false
+      } else setError('email', '')
+      if (message.length < 10 || message.length > 2000) {
+        setError('message', 'Between 10 and 2000 characters.')
+        ok = false
+      } else setError('message', '')
+      return ok
+    }
+
+    const composeMessage = (): string => {
+      const type = currentType() === 'bug' ? 'Bug report' : 'Question'
+      const lines = [`Type: ${type}`]
+      if (currentType() === 'bug') {
+        lines.push(`Component: ${(field('component') as HTMLSelectElement).value}`)
+        const firmware = (field('firmware') as HTMLInputElement).value.trim()
+        const reproduction = (field('reproduction') as HTMLTextAreaElement).value.trim()
+        lines.push(`Firmware version: ${firmware || '—'}`)
+        lines.push(`Reproduction: ${reproduction || '—'}`)
+      }
+      lines.push('', (field('message') as HTMLTextAreaElement).value.trim())
+      return lines.join('\n')
+    }
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault()
+      formError.hidden = true
+      if ((field('company') as HTMLInputElement).value) return
+      if (!validate()) {
+        const invalid = form.querySelector<HTMLElement>('[aria-invalid="true"]')
+        invalid?.focus()
+        return
+      }
+
+      const email = (field('email') as HTMLInputElement).value.trim()
+      submit.disabled = true
+      submit.textContent = 'Sending…'
+
+      try {
+        const response = await fetch(endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: email.split('@')[0],
+            email,
+            message: composeMessage(),
+            company: '',
+          }),
+        })
+        if (!response.ok) throw new Error(`HTTP ${response.status}`)
+        formSuccess.hidden = false
+        form
+          .querySelectorAll<HTMLElement>('.cs-seg, .cs-field, .cs-details, .cs-form-actions')
+          .forEach((node) => (node.hidden = true))
+      } catch {
+        formError.textContent =
+          'That did not send. Open a GitHub issue, or email contact@canshift.app directly.'
+        formError.hidden = false
+        submit.disabled = false
+        submit.textContent = 'Send it →'
+      }
+    })
+  }
+</script>
