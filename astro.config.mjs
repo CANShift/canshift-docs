@@ -116,7 +116,7 @@ export default defineConfig({
               badge: { text: '↗', variant: 'note' },
             },
             {
-              label: 'GitHub monorepo',
+              label: 'GitHub org',
               link: 'https://github.com/CANShift',
               attrs: { target: '_blank', rel: 'noopener' },
               badge: { text: '↗', variant: 'note' },

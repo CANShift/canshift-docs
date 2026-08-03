@@ -1,17 +1,17 @@
 ---
 title: 'Testing'
-description: 'Unity (firmware C++), cargo test (Rust ports), Vitest (TS packages).'
+description: 'Unity (firmware C++), cargo test (Rust modules), Vitest/Jest (TS packages).'
 sidebar:
   order: 2
 ---
 
-CANShift has three test harnesses, one per language. CI runs all three on
-every PR; locally you can run them independently.
+Each repository owns its test harness and runs it in its own CI on every PR.
+There is no shared pipeline — you run each suite inside its repository.
 
-## Firmware C++ — Unity on native
+## Firmware C++ — Unity on native (`canshift-firmware`)
 
 The firmware test suite uses PlatformIO's Unity integration with the `native`
-env. Tests live under `canshift-firmware/test/<suite>/test_main.cpp`.
+env. Tests live under `test/<suite>/test_main.cpp`.
 
 ```bash
 cd canshift-firmware
@@ -41,7 +41,7 @@ What's covered:
 The `test/native/shim/` directory holds host-side fakes for HAL surfaces
 (StorageDriver, etc.) so tests can run without an ESP32.
 
-## Rust crates — cargo test
+## Rust crates — cargo test (`canshift-firmware`)
 
 Each crate under `canshift-firmware/rust/` carries its own tests.
 
@@ -60,28 +60,42 @@ cargo test --workspace
 Each crate has parity tests that exercise the same fixtures as the matching
 C++ Unity suite — flipping `USE_RUST_*=1` keeps observable behaviour.
 
-## TypeScript packages — Vitest
+## TypeScript packages
+
+`canshift-core` uses Jest; `canshift-tuner` and `canshift-mobile` use Vitest
+and Jest respectively. Run each inside its own repository:
 
 ```bash
 cd canshift-core && npm test
 cd canshift-tuner && npm test
 ```
 
-`canshift-core` is the schema source of truth; bumping a Zod schema usually
-breaks at least one schema-version test in `canshift-core` and a
-roundtrip test in `canshift-tuner`. Fix both in the same PR.
+`canshift-core` is the schema source of truth. It is published to npm as
+`@canshift/core`, so a schema change lands and is released there before the
+tuner or mobile app bump their dependency. Bumping a Zod schema usually breaks
+at least one schema-version test in `canshift-core` and a roundtrip test in a
+consumer — land the core change first, publish, then fix the consumer against
+the new version.
+
+The firmware mirrors the core schema in `config_types.h`. Its parity and
+fixture suites run against a sibling `../canshift-core` checkout and skip when
+none is present, so run the firmware suite with `canshift-core` cloned
+alongside it to exercise them.
 
 ## CI gates
 
-| Package  | Gate                             | Where                                              |
-| -------- | -------------------------------- | -------------------------------------------------- |
-| firmware | clang-format pass                | GitHub Actions workflow                            |
-| firmware | `pio test -e native`             | GitHub Actions                                     |
-| firmware | Boot smoke (`[BOOT] Ready` line) | `.github/workflows/firmware-boot-smoke.yml` (#486) |
-| rust     | `cargo test --workspace`         | GitHub Actions                                     |
-| TS       | `typecheck` + `lint` + `test`    | GitHub Actions                                     |
+Each repository enforces its own required checks before merge:
 
-All gates must pass before merge.
+| Repository          | Gates                                                                       |
+| ------------------- | --------------------------------------------------------------------------- |
+| `canshift-firmware` | clang-format · `pio test -e native` · `cargo test --workspace` · boot smoke |
+| `canshift-core`     | `lint` · `test` · `build`                                                   |
+| `canshift-tuner`    | `lint` · `typecheck` · `test` · `build`                                     |
+| `canshift-mobile`   | `lint` · `typecheck` · `test`                                               |
+| `canshift-docs`     | `lint` · `build`                                                            |
+
+All required checks must pass before merge; every repository merges via
+rebase and merge.
 
 ## Adding a new test
 
@@ -92,3 +106,6 @@ needs extra includes.
 For Rust: add tests in `#[cfg(test)] mod tests { … }` blocks inside the
 relevant `lib.rs` or `ffi.rs`. The workspace `cargo test` picks them up
 automatically.
+
+For the TypeScript packages: colocate the test with the code it covers and let
+the package's runner discover it.
