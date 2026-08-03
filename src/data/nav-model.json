@@ -1,0 +1,348 @@
+{
+  "audiences": ["driver", "tuner", "dev"],
+  "groups": [
+    {
+      "id": "g1",
+      "num": "1",
+      "label": "USER GUIDE",
+      "audiences": ["driver", "tuner", "dev"],
+      "icon": { "repoMarkPaths": ["M18 18 H98 V84 H18 Z", "M58 60 H82"] },
+      "items": [
+        {
+          "num": "1.1",
+          "label": "What is CANShift?",
+          "slug": "user-guide/getting-started/overview",
+          "exists": true,
+          "children": []
+        },
+        {
+          "num": "1.2",
+          "label": "First flash",
+          "slug": "user-guide/install/first-flash",
+          "exists": true,
+          "children": [
+            {
+              "num": "1.2.1",
+              "label": "Manual flash",
+              "slug": "user-guide/install/manual-flash",
+              "exists": true
+            }
+          ]
+        },
+        {
+          "num": "1.3",
+          "label": "Boot diagnostics",
+          "slug": "user-guide/install/boot-issues",
+          "exists": true,
+          "children": []
+        },
+        {
+          "num": "1.4",
+          "label": "Configure with the Tuner",
+          "slug": "user-guide/configure/with-tuner",
+          "exists": true,
+          "children": [
+            {
+              "num": "1.4.1",
+              "label": "ECU profiles",
+              "slug": "user-guide/configure/ecu-profiles",
+              "exists": false
+            },
+            {
+              "num": "1.4.2",
+              "label": "Widgets & pages",
+              "slug": "user-guide/configure/widgets",
+              "exists": false
+            },
+            {
+              "num": "1.4.3",
+              "label": "Live data",
+              "slug": "user-guide/configure/live-data",
+              "exists": false
+            }
+          ]
+        },
+        {
+          "num": "1.5",
+          "label": "Burn errors",
+          "slug": "user-guide/configure/burn-errors",
+          "exists": true,
+          "children": []
+        },
+        {
+          "num": "1.6",
+          "label": "Cruise control",
+          "slug": "user-guide/usage/cruise-control",
+          "exists": true,
+          "children": []
+        },
+        {
+          "num": "1.7",
+          "label": "Navigating pages",
+          "slug": "user-guide/usage/navigating-pages",
+          "exists": true,
+          "children": []
+        },
+        {
+          "num": "1.8",
+          "label": "Settings panel",
+          "slug": "user-guide/usage/settings-panel",
+          "exists": true,
+          "children": []
+        }
+      ]
+    },
+    {
+      "id": "g2",
+      "num": "2",
+      "label": "FIRMWARE ARCHITECTURE",
+      "audiences": ["dev"],
+      "icon": { "repoMarkPaths": ["M14 68 H46 V30 H62", "M62 30 V68 H100"] },
+      "items": [
+        {
+          "num": "2.1",
+          "label": "Overview",
+          "slug": "technical/architecture/overview",
+          "exists": true,
+          "children": []
+        },
+        {
+          "num": "2.2",
+          "label": "Boot sequence",
+          "slug": "technical/architecture/boot-sequence",
+          "exists": true,
+          "children": []
+        },
+        {
+          "num": "2.3",
+          "label": "LVGL ownership",
+          "slug": "technical/architecture/lvgl-ownership",
+          "exists": true,
+          "children": []
+        },
+        {
+          "num": "2.4",
+          "label": "Page lifecycle",
+          "slug": "technical/architecture/page-lifecycle",
+          "exists": true,
+          "children": []
+        },
+        {
+          "num": "2.5",
+          "label": "Transports",
+          "slug": "technical/architecture/transports",
+          "exists": false,
+          "children": [
+            {
+              "num": "2.5.1",
+              "label": "USB CDC",
+              "slug": "technical/architecture/usb-transport",
+              "exists": true
+            },
+            {
+              "num": "2.5.2",
+              "label": "BLE GATT",
+              "slug": "technical/architecture/ble-transport",
+              "exists": true
+            }
+          ]
+        },
+        {
+          "num": "2.6",
+          "label": "Cruise template",
+          "slug": "technical/architecture/cruise-template",
+          "exists": true,
+          "children": []
+        },
+        {
+          "num": "2.7",
+          "label": "ErrorStore & SignalStore",
+          "slug": "technical/architecture/signal-store",
+          "exists": true,
+          "children": []
+        }
+      ]
+    },
+    {
+      "id": "g3",
+      "num": "3",
+      "label": "REFERENCE",
+      "audiences": ["tuner", "dev"],
+      "icon": { "repoMarkPaths": ["M16 28 H100 V72 H16 Z", "M68 50 H82"] },
+      "items": [
+        {
+          "num": "3.1",
+          "label": "Hardware & BOM",
+          "slug": "technical/reference/hardware-bom",
+          "exists": false,
+          "children": []
+        },
+        {
+          "num": "3.2",
+          "label": "Pinout — CrowPanel 2.8″",
+          "slug": "technical/reference/pinout",
+          "exists": true,
+          "children": [
+            {
+              "num": "3.2.1",
+              "label": "Display bus",
+              "slug": "technical/reference/pinout-display",
+              "exists": false
+            },
+            {
+              "num": "3.2.2",
+              "label": "CAN header",
+              "slug": "technical/reference/pinout-can",
+              "exists": false
+            },
+            {
+              "num": "3.2.3",
+              "label": "Power rails",
+              "slug": "technical/reference/pinout-power",
+              "exists": false
+            }
+          ]
+        },
+        {
+          "num": "3.3",
+          "label": "Build flags",
+          "slug": "technical/reference/build-flags",
+          "exists": true,
+          "children": []
+        },
+        {
+          "num": "3.4",
+          "label": "Signal map",
+          "slug": "technical/reference/signals",
+          "exists": true,
+          "children": []
+        },
+        {
+          "num": "3.5",
+          "label": "CAN integration notes",
+          "slug": "technical/reference/can-integration",
+          "exists": true,
+          "children": []
+        },
+        {
+          "num": "3.6",
+          "label": "Config contract",
+          "slug": "technical/reference/config-contract",
+          "exists": true,
+          "children": []
+        },
+        {
+          "num": "3.7",
+          "label": "ECU integration",
+          "slug": "technical/reference/ecu-integration",
+          "exists": true,
+          "children": []
+        },
+        {
+          "num": "3.8",
+          "label": "Secure boot",
+          "slug": "technical/reference/secure-boot-setup",
+          "exists": true,
+          "children": [
+            {
+              "num": "3.8.1",
+              "label": "Firmware release signing",
+              "slug": "technical/reference/firmware-signing",
+              "exists": true
+            }
+          ]
+        },
+        {
+          "num": "3.9",
+          "label": "Wire protocol versioning",
+          "slug": "technical/reference/wire-protocol-versioning",
+          "exists": true,
+          "children": []
+        }
+      ]
+    },
+    {
+      "id": "g4",
+      "num": "4",
+      "label": "TUNER & MOBILE APP",
+      "audiences": ["driver", "tuner"],
+      "icon": { "repoMarkPaths": ["M18 32 H98 M18 68 H98", "M42 20 V44 M74 56 V80"] },
+      "items": [
+        {
+          "num": "4.1",
+          "label": "Tuner tour",
+          "slug": "tuner-app/tuner-tour",
+          "exists": false,
+          "children": []
+        },
+        {
+          "num": "4.2",
+          "label": "Pairing over BLE",
+          "slug": "tuner-app/pairing",
+          "exists": false,
+          "children": []
+        },
+        {
+          "num": "4.3",
+          "label": "Layout editor",
+          "slug": "tuner-app/layout-editor",
+          "exists": false,
+          "children": []
+        },
+        {
+          "num": "4.4",
+          "label": "Mobile companion",
+          "slug": "tuner-app/mobile",
+          "exists": false,
+          "children": []
+        }
+      ]
+    },
+    {
+      "id": "g5",
+      "num": "5",
+      "label": "CONTRIBUTING",
+      "audiences": ["dev"],
+      "icon": { "repoMarkPaths": ["M22 78 V60 M50 78 V44", "M78 78 V28"] },
+      "items": [
+        {
+          "num": "5.1",
+          "label": "Dev setup",
+          "slug": "technical/contributing/dev-setup",
+          "exists": true,
+          "children": []
+        },
+        {
+          "num": "5.2",
+          "label": "Testing",
+          "slug": "technical/contributing/testing",
+          "exists": true,
+          "children": []
+        },
+        {
+          "num": "5.3",
+          "label": "Release process",
+          "slug": "technical/contributing/release-process",
+          "exists": true,
+          "children": []
+        },
+        {
+          "num": "5.4",
+          "label": "Add an ECU profile",
+          "slug": "technical/contributing/add-ecu",
+          "exists": true,
+          "children": []
+        },
+        {
+          "num": "5.5",
+          "label": "Add a dashboard widget",
+          "slug": "technical/contributing/add-widget",
+          "exists": true,
+          "children": []
+        },
+        { "num": "5.6", "label": "Changelog", "slug": "changelog", "exists": true, "children": [] },
+        { "num": "5.7", "label": "Roadmap", "slug": "roadmap", "exists": true, "children": [] }
+      ]
+    }
+  ]
+}
