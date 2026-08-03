@@ -85,10 +85,15 @@ export default defineConfig({
       expressiveCode: {
         themes: canshiftCodeThemes,
       },
+      editLink: {
+        baseUrl: 'https://github.com/CANShift/canshift-docs/edit/main/',
+      },
       components: {
         Head: './src/components/Head.astro',
         Header: './src/components/Header.astro',
         Sidebar: './src/components/Sidebar.astro',
+        PageSidebar: './src/components/PageSidebar.astro',
+        TableOfContents: './src/components/TableOfContents.astro',
       },
       head: [
         {

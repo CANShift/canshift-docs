@@ -6,6 +6,7 @@
       "num": "1",
       "label": "USER GUIDE",
       "navLabel": "GUIDE",
+      "reportRepo": "docs",
       "audiences": ["driver", "tuner", "dev"],
       "icon": {
         "repoMarkPaths": ["M18 18 H98 V84 H18 Z", "M58 60 H82"]
@@ -100,6 +101,7 @@
       "num": "2",
       "label": "FIRMWARE ARCHITECTURE",
       "navLabel": "FIRMWARE",
+      "reportRepo": "firmware",
       "audiences": ["dev"],
       "icon": {
         "repoMarkPaths": ["M14 68 H46 V30 H62", "M62 30 V68 H100"]
@@ -174,6 +176,7 @@
       "num": "3",
       "label": "REFERENCE",
       "navLabel": "REFERENCE",
+      "reportRepo": "firmware",
       "audiences": ["tuner", "dev"],
       "icon": {
         "repoMarkPaths": ["M16 28 H100 V72 H16 Z", "M68 50 H82"]
@@ -275,6 +278,7 @@
       "num": "4",
       "label": "TUNER & MOBILE APP",
       "navLabel": "TUNER & APP",
+      "reportRepo": "tuner",
       "audiences": ["driver", "tuner"],
       "icon": {
         "repoMarkPaths": ["M18 32 H98 M18 68 H98", "M42 20 V44 M74 56 V80"]
@@ -315,6 +319,7 @@
       "num": "5",
       "label": "CONTRIBUTING",
       "navLabel": "CONTRIBUTING",
+      "reportRepo": "docs",
       "audiences": ["dev"],
       "icon": {
         "repoMarkPaths": ["M22 78 V60 M50 78 V44", "M78 78 V28"]
