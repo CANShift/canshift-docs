@@ -3,6 +3,8 @@ title: 'Wire protocol versioning'
 description: 'Major/minor version handshake between firmware and tuner over WebSerial.'
 sidebar:
   order: 14
+source: 'include/app_config.h'
+wire: 'v2'
 ---
 
 The compatibility contract between the Tuner build and the firmware build it connects to over WebSerial. Codifies the rule the connect-time handshake (`CMD_QUERY_VERSION`, issue #1365) enforces.

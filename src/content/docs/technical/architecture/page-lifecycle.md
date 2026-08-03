@@ -3,6 +3,7 @@ title: 'Page lifecycle'
 description: 'Build, lazy build, release — the dashboard page state machine.'
 sidebar:
   order: 30
+source: 'src/ui/page_manager.cpp'
 ---
 
 PageManager owns the dashboard's page tree, the LVGL screens it represents,

@@ -3,6 +3,7 @@ title: 'Signal map'
 description: 'Known signals — their ids, units, and where they come from.'
 sidebar:
   order: 3
+source: 'src/can/signal_map.h'
 ---
 
 The `SignalId` enum is the integer key into `SignalStore`. Every signal the

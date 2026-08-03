@@ -3,6 +3,7 @@ title: 'ECU integration reference'
 description: 'Catalogue format, frame parser, RealDash XML import.'
 sidebar:
   order: 12
+source: 'src/can/obd2_poller.cpp'
 ---
 
 How to wire CANShift to an arbitrary CAN-bus ECU. This is the walkthrough

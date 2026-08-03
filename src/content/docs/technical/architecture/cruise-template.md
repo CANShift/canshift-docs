@@ -3,6 +3,7 @@ title: 'Cruise template'
 description: 'L-shape buttons + LVGL convex-polygon workaround.'
 sidebar:
   order: 60
+source: 'src/ui/widgets/cruise_control_widget.cpp'
 ---
 
 The cruise control page in `page_manager_builder.cpp` renders four buttons

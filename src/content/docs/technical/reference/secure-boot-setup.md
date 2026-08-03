@@ -3,6 +3,7 @@ title: 'Secure boot setup'
 description: 'Enable secure boot v2 + flash encryption on the ESP32 production builds.'
 sidebar:
   order: 13
+source: 'scripts/secure_boot_first_flash.sh'
 ---
 
 > [!CAUTION]

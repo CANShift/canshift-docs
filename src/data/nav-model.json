@@ -45,6 +45,7 @@
           "label": "Configure with the Tuner",
           "slug": "user-guide/configure/with-tuner",
           "exists": true,
+          "reportRepo": "tuner",
           "children": [
             {
               "num": "1.4.1",

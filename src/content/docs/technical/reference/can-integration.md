@@ -3,6 +3,7 @@ title: 'CAN integration notes'
 description: 'TWAI peripheral configuration, bus speed, sample frame layouts.'
 sidebar:
   order: 10
+source: 'src/can/can_manager.cpp'
 ---
 
 ## Hardware Overview
