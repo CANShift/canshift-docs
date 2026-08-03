@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@astrojs/react": "^5.0.7",
-    "@astrojs/starlight": "^0.41.4",
+    "@astrojs/starlight": "^0.41.5",
     "@sentry/astro": "^10.69.0",
     "@vercel/analytics": "^2.0.1",
     "astro": "^7.1.3",
