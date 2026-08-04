@@ -13,7 +13,7 @@ const externalGroup = {
   items: [
     {
       label: 'Tuner (web — includes flasher)',
-      link: 'https://canshift.tmbk.ch',
+      link: 'https://tuner.canshift.app',
       attrs: { target: '_blank', rel: 'noopener' },
       badge: { text: '↗', variant: 'note' },
     },

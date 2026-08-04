@@ -1,6 +1,6 @@
 # canshift-docs — Project Rules
 
-Documentation site for CANShift (org: github.com/CANShift) — Astro + Starlight, deployed at docs.canshift.tmbk.ch.
+Documentation site for CANShift (org: github.com/CANShift) — Astro + Starlight, deployed at canshift.app.
 
 ## Commands
 
