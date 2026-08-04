@@ -55,7 +55,7 @@ const canshiftCodeThemes = [
 ]
 
 export default defineConfig({
-  site: 'https://docs.canshift.tmbk.ch',
+  site: 'https://canshift.app',
   integrations: [
     ...(process.env.PUBLIC_SENTRY_DSN
       ? [
@@ -104,14 +104,14 @@ export default defineConfig({
           tag: 'meta',
           attrs: {
             property: 'og:image',
-            content: 'https://docs.canshift.tmbk.ch/og-image-1200x630.png',
+            content: 'https://canshift.app/og-image-1200x630.png',
           },
         },
         {
           tag: 'meta',
           attrs: {
             name: 'twitter:image',
-            content: 'https://docs.canshift.tmbk.ch/og-image-1200x630.png',
+            content: 'https://canshift.app/og-image-1200x630.png',
           },
         },
       ],

@@ -26,7 +26,7 @@ npm run preview     # serve dist/ locally
 
 ## Deploy
 
-Deployed to Vercel at [docs.canshift.tmbk.ch](https://docs.canshift.tmbk.ch) via the
+Deployed to Vercel at [canshift.app](https://canshift.app) via the
 `deploy-vercel.yml` workflow (manual dispatch, target `docs`, preview or production).
 
 ## Structure
@@ -56,4 +56,4 @@ release renders as a blank entry.
 ## Links
 
 - [GitHub organization](https://github.com/CANShift)
-- [Tuner — includes flasher at `/firmware`](https://canshift.tmbk.ch)
+- [Tuner — includes flasher at `/firmware`](https://tuner.canshift.app)
