@@ -1,9 +1,29 @@
 ---
 import Default from '@astrojs/starlight/components/Head.astro'
 import Analytics from '@vercel/analytics/astro'
+import { websiteLd, organizationLd, softwareApplicationLd, articleLd, breadcrumbLd } from '../lib/seo'
+
+const route = Astro.locals.starlightRoute
+const data = route.entry.data
+const description = data.description ?? ''
+
+const strip = (value: string) => value.replace(/\/+$/, '')
+const path = strip(Astro.url.pathname) || '/'
+const isHome = path === '/'
+const isSplash = data.template === 'splash'
+const modified = route.lastUpdated instanceof Date ? route.lastUpdated.toISOString() : undefined
+
+const graph: Record<string, unknown>[] = [websiteLd(), organizationLd()]
+if (isHome) graph.push(softwareApplicationLd(description))
+if (!isSplash) {
+  graph.push(articleLd(path, data.title, description, modified))
+  const crumb = breadcrumbLd(path, data.title)
+  if (crumb) graph.push(crumb)
+}
 ---
 
 <Default><slot /></Default>
+{graph.map((entry) => <script type="application/ld+json" set:html={JSON.stringify(entry)} />)}
 <Analytics />
 <script>
   import posthog from 'posthog-js'
