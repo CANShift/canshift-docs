@@ -21,7 +21,7 @@
   --cs-sunk: #e2e0e0;
   --cs-ink: #201e1d;
   --cs-muted: #605d5d;
-  --cs-faint: #7d7979;
+  --cs-faint: #726e6e;
   --cs-line: rgba(32, 30, 29, 0.16);
   --cs-rule: #201e1d;
 
@@ -34,6 +34,7 @@
   --cs-code-btn-border: rgba(255, 255, 255, 0.15);
 
   --cs-on-accent: #ffffff;
+  --cs-accent-fill: #d62a10;
   --cs-accent-pressed: #c9250c;
 
   --cs-overlay: rgba(0, 0, 0, 0.35);
@@ -79,12 +80,13 @@
 :root[data-theme='dark'] {
   --cs-accent: #ff4747;
   --cs-accent-soft: rgba(255, 71, 71, 0.1);
+  --cs-accent-fill: #ff4747;
   --cs-bg: #121212;
   --cs-panel: #1a1a19;
   --cs-sunk: #202020;
   --cs-ink: #f3f2f2;
   --cs-muted: #a3a09e;
-  --cs-faint: #7d7979;
+  --cs-faint: #817d7d;
   --cs-line: rgba(243, 242, 242, 0.15);
   --cs-rule: #f3f2f2;
 
@@ -512,7 +514,7 @@ starlight-theme-select {
   flex: 1;
 }
 .cs-page-link[aria-current='page'] {
-  background: var(--cs-accent);
+  background: var(--cs-accent-fill);
   color: var(--cs-on-accent);
   font-weight: 600;
 }
@@ -581,7 +583,7 @@ starlight-theme-select {
   content: var(--cs-gnum) '.' counter(cs-page) '.' counter(cs-sub);
 }
 .cs-sub-link[aria-current='page'] {
-  background: var(--cs-accent);
+  background: var(--cs-accent-fill);
   color: var(--cs-on-accent);
   font-weight: 600;
 }
@@ -667,7 +669,7 @@ h1#_top {
   color: var(--cs-muted);
 }
 .cs-badge-accent {
-  background: var(--cs-accent);
+  background: var(--cs-accent-fill);
   border-color: var(--cs-accent);
   color: var(--cs-on-accent);
   font-weight: 700;
@@ -711,7 +713,7 @@ h1#_top {
   text-decoration: none;
 }
 .cs-placeholder .cs-placeholder-primary {
-  background: var(--cs-accent);
+  background: var(--cs-accent-fill);
   color: var(--cs-on-accent);
 }
 .cs-placeholder .cs-placeholder-primary:hover {
@@ -1133,7 +1135,7 @@ a.cs-pager-cell:hover {
   color: var(--cs-muted);
 }
 .cs-palette-result-excerpt mark {
-  background: var(--cs-accent);
+  background: var(--cs-accent-fill);
   color: var(--cs-on-accent);
   padding: 0 3px;
 }
@@ -1184,7 +1186,7 @@ a.cs-pager-cell:hover {
   justify-content: flex-start;
 }
 .sl-link-button.primary {
-  background: var(--cs-accent);
+  background: var(--cs-accent-fill);
   border-color: var(--cs-accent);
   color: var(--cs-on-accent);
 }
@@ -1490,7 +1492,7 @@ a.cs-pager-cell:active,
   text-decoration: none;
 }
 .cs-home .cs-btn-primary {
-  background: var(--cs-accent);
+  background: var(--cs-accent-fill);
   color: var(--cs-on-accent);
   letter-spacing: 0.02em;
 }
@@ -1763,7 +1765,7 @@ a.cs-pager-cell:active,
   justify-content: space-between;
   gap: 2.75rem;
   padding: clamp(3rem, 6vw, 5.25rem) clamp(1.5rem, 5vw, 4.5rem);
-  background: var(--cs-accent);
+  background: var(--cs-accent-fill);
   color: var(--cs-on-accent);
 }
 .cs-home .cs-poster-rule {
@@ -2062,7 +2064,7 @@ a.cs-pager-cell:active,
   border-left: 1px solid var(--cs-line);
 }
 .cs-seg-item input:checked + span {
-  background: var(--cs-accent);
+  background: var(--cs-accent-fill);
   color: var(--cs-on-accent);
 }
 .cs-seg-item input:focus-visible + span {
@@ -2130,7 +2132,7 @@ a.cs-pager-cell:active,
   font: inherit;
   padding: 1rem 1.875rem;
   border: 0;
-  background: var(--cs-accent);
+  background: var(--cs-accent-fill);
   color: var(--cs-on-accent);
   font-size: 0.875rem;
   font-weight: 700;
@@ -2188,7 +2190,7 @@ a.cs-pager-cell:active,
   background: var(--cs-panel);
 }
 .cs-bom-region[aria-pressed='true'] {
-  background: var(--cs-accent);
+  background: var(--cs-accent-fill);
   border-color: var(--cs-accent);
   color: var(--cs-on-accent);
 }
